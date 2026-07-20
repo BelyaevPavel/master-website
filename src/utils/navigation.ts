@@ -40,11 +40,11 @@ interface MenuItem {
     }
     
     const segments = currentPath.split('/').filter(Boolean);
-    let currentHref = '';
     
-    segments.forEach((segment) => {
-      currentHref += `/${segment}/`;
-      const label = labelMap[currentHref] || segment;
+    segments.forEach((_, index) => {
+      const pathSegments = segments.slice(0, index + 1);
+      const currentHref = '/' + pathSegments.join('/') + '/';
+      const label = labelMap[currentHref] || pathSegments[index];
       crumbs.push({ label, href: currentHref });
     });
     

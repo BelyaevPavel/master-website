@@ -13,12 +13,13 @@ export function formatPrice(price: number): string {
       throw new Error('formatPrice: цена не может быть отрицательной');
     }
     
-    return price.toLocaleString('ru-RU') + ' ₽';
+    const formatted = price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return `${formatted} ₽`;
   }
   
   /**
    * Форматирует ISO-дату в читаемый русский вид
-   * @example formatDate('2024-10-15') => "октябрь 2024"
+   * @example formatDate('2024-10-15') => "октябрь 2024 г."
    */
   export function formatDate(isoDate: string): string {
     const date = new Date(isoDate);

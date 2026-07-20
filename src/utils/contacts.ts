@@ -20,19 +20,15 @@ export function buildPhoneLink(phone: string): string {
    * @example buildWhatsAppUrl('79998887766', 'Привет') => "https://wa.me/79998887766?text=%D0%9F%D1%80%D0%B8%D0%B2%D0%B5%D1%82"
    */
   export function buildWhatsAppUrl(whatsapp: string, message?: string): string {
-    const cleaned = whatsapp.replace(/[^\d]/g, '');
-    
-    if (!cleaned.startsWith('7') || cleaned.length !== 11) {
-      throw new Error('buildWhatsAppUrl: номер должен быть в формате 79998887766');
+    // Строгий формат: 11 цифр, начинается с 7
+    if (!/^7\d{10}$/.test(whatsapp)) {
+      throw new Error(
+        'buildWhatsAppUrl: номер должен быть в формате 79998887766 (11 цифр, начинается с 7)'
+      );
     }
-    
-    const baseUrl = `https://wa.me/${cleaned}`;
-    
-    if (!message) {
-      return baseUrl;
-    }
-    
-    return `${baseUrl}?text=${encodeURIComponent(message)}`;
+  
+    const baseUrl = `https://wa.me/${whatsapp}`;
+    return message ? `${baseUrl}?text=${encodeURIComponent(message)}` : baseUrl;
   }
   
   /**

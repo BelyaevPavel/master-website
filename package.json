@@ -10,7 +10,7 @@
     "build": "npm run validate && npm run test:unit && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "validate": "tsx src/scripts/validate-data.ts",
+    "validate": "npx tsx src/scripts/validate-data.ts",
     "test": "vitest",
     "test:unit": "vitest run",
     "test:watch": "vitest",

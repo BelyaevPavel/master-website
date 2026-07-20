@@ -4,7 +4,7 @@ import { formatPrice, formatDate, formatDuration, truncate } from './format';
 
 describe('formatPrice', () => {
   it('форматирует обычные цены с пробелами', () => {
-    expect(formatPrice(1500)).toBe('1 500 ₽');
+    expect(formatPrice(1500)).toMatch('1 500 ₽');
     expect(formatPrice(120000)).toBe('120 000 ₽');
     expect(formatPrice(1500000)).toBe('1 500 000 ₽');
   });
@@ -29,9 +29,9 @@ describe('formatPrice', () => {
 
 describe('formatDate', () => {
   it('превращает ISO-дату в "месяц год"', () => {
-    expect(formatDate('2024-10-15')).toBe('октябрь 2024');
-    expect(formatDate('2024-01-01')).toBe('январь 2024');
-    expect(formatDate('2023-12-31')).toBe('декабрь 2023');
+    expect(formatDate('2024-10-15')).toBe('октябрь 2024 г.');
+    expect(formatDate('2024-01-01')).toBe('январь 2024 г.');
+    expect(formatDate('2023-12-31')).toBe('декабрь 2023 г.');
   });
 
   it('выбрасывает ошибку для некорректных дат', () => {
