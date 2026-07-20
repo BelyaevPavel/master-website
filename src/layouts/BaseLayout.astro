@@ -1,0 +1,190 @@
+---
+import '@styles/bootstrap.scss';
+import '@/styles/global.css';
+import Header from '@/components/Header.astro';
+import Footer from '@/components/Footer.astro';
+import StickyCTA from '@/components/StickyCTA.astro';
+import Analytics from '@/components/Analytics.astro';
+import contacts from '@/data/contacts.json';
+
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
+const base = import.meta.env.BASE_URL; 
+
+const googleVerifID = 'KXnYsUNw_r7ngySEb-8M1ZR7z4ebvf4CkIRWCQpATac';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical?: string;
+  image?: string;
+  noindex?: boolean;
+}
+
+const { 
+  title, 
+  description, 
+  canonical = Astro.url.href,
+  image = base+'/images/og-default.jpg',
+  noindex = false
+} = Astro.props;
+
+const siteName = 'Мастер по ремонту';
+const fullImageUrl = new URL(image, Astro.url).href;
+const iconUrl = new URL(`${base}favicon.svg`, Astro.url).href;
+
+// Расширенная Schema.org разметка LocalBusiness + Person + AggregateRating
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": `${Astro.url.origin}/#business`,
+  "name": "Мастер по ремонту",
+  "alternateName": `Мастер по ремонту в ${contacts.city}`,
+  "image": `${Astro.url.origin}/images/master-photo.webp`,
+  "logo": iconUrl,
+  "description": description,
+  "telephone": contacts.phone,
+  "email": contacts.email,
+  "url": Astro.url.origin,
+  "priceRange": "₽₽",
+  "currenciesAccepted": "RUB",
+  "paymentAccepted": "Наличные, Перевод",
+  
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": contacts.city,
+    "addressCountry": "RU"
+  },
+  
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": contacts.city_latitude,
+    "longitude": contacts.city_longitude
+  },
+  
+  "areaServed": [{
+    "@type": "City",
+    "name": contacts.city
+  }],
+  
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    "opens": "08:00",
+    "closes": "22:00"
+  },
+  
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "47",
+    "bestRating": "5",
+    "worstRating": "1"
+  },
+  
+  "founder": {
+    "@type": "Person",
+    "name": "Иван Иванов",
+    "jobTitle": "Частный мастер по ремонту",
+    "worksFor": {
+      "@type": "LocalBusiness",
+      "@id": `${Astro.url.origin}/#business`
+    },
+    "knowsAbout": ["Электромонтаж", "Натяжные потолки", "Укладка плитки"]
+  },
+  
+  "sameAs": [
+    contacts.socialMedia.vk,
+    contacts.socialMedia.instagram
+  ]
+};
+---
+
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#2563eb" />
+    
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    
+    {noindex ? (
+      <meta name="robots" content="noindex, nofollow" />
+    ) : (
+      <meta name="robots" content="index, follow, max-image-preview:large" />
+    )}
+    
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={iconUrl} />
+    
+    <!-- Ускорение загрузки: Preconnect для внешних ресурсов -->
+    <link rel="preconnect" href="https://mc.yandex.ru" />
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
+    
+    <!-- Open Graph для соцсетей -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:image" content={fullImageUrl} />
+    <meta property="og:locale" content="ru_RU" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={fullImageUrl} />
+    
+    <!-- Schema.org JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema, null, 2)} />
+    
+    <!-- Подтверждение собственности Google -->
+    <meta name="google-site-verification" content={googleVerifID} />
+    
+    <!-- Аналитика -->
+    <Analytics />
+  </head>
+  <body>
+    <!-- Skip to content — для доступности (клавиатурная навигация) -->
+    <a href="#main-content" class="skip-link">
+      Перейти к основному содержимому
+    </a>
+    
+    <Header city={contacts.city} />
+    
+    <main id="main-content">
+      <slot />
+    </main>
+    
+    <Footer contacts={contacts} />
+    <StickyCTA phone={contacts.phone} />
+    
+    <script>
+      import 'bootstrap/dist/js/bootstrap';
+    </script>
+  </body>
+</html>
+
+<style>
+  /* Skip-link — скрыта, но видна при фокусе */
+  .skip-link {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    background: var(--bs-primary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    z-index: 9999;
+    text-decoration: none;
+    font-weight: 600;
+    transition: top 0.2s;
+  }
+  
+  .skip-link:focus {
+    top: 0;
+  }
+</style>

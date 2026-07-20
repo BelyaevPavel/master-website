@@ -1,0 +1,191 @@
+---
+// src/components/About.astro
+import about from '@/data/about.json';
+import { Image } from 'astro:assets';
+
+import aboutPhoto from "@/images/about-photo.jpg";
+---
+
+<section class="about-section" aria-labelledby="about-heading">
+  <div class="container">
+    
+    <!-- Заголовок страницы -->
+    <header class="about-section__header text-center mb-5">
+      <h1 id="about-heading" class="display-4 fw-bold mb-3">
+        {about.title}
+      </h1>
+      <p class="lead text-muted">{about.subtitle}</p>
+    </header>
+    
+    <!-- Большое центральное фото -->
+    <div class="about-section__photo-wrapper mb-5">
+      <Image 
+        src={aboutPhoto}
+        alt={about.photoAlt}
+        class="about-section__photo"
+        width="600"
+        height="600"
+        loading="eager"
+        decoding="async"
+        fetchpriority="high"
+      />
+    </div>
+    
+    <!-- Основной текст -->
+    <article class="about-section__content mx-auto mb-5" style="max-width: 760px;">
+      <p class="about-section__intro fs-5 lh-lg mb-4">
+        {about.intro}
+      </p>
+      <p class="about-section__text lh-lg text-muted">
+        {about.about}
+      </p>
+      
+      <!-- Подпись мастера -->
+      <div class="about-section__signature mt-4">
+        <span class="about-section__signature-text">С уважением,</span>
+        <span class="about-section__signature-name">{about.signature}</span>
+      </div>
+    </article>
+    
+    <!-- Статистика -->
+    <div class="about-section__stats py-5">
+      <div class="row text-center g-4">
+        {about.stats.map(stat => (
+          <div class="col-6 col-md-4">
+            <div class="about-section__stat">
+              <div class="about-section__stat-value">{stat.value}</div>
+              <div class="about-section__stat-label">{stat.label}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+    
+  </div>
+</section>
+
+<style>
+  .about-section {
+    padding: 4rem 0;
+    background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+  }
+  
+  /* Заголовок */
+  .about-section__header h1 {
+    color: #1e293b;
+    letter-spacing: -0.02em;
+  }
+  
+  /* Фото мастера */
+  .about-section__photo-wrapper {
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+  
+  .about-section__photo-wrapper::before {
+    content: '';
+    position: absolute;
+    width: 85%;
+    height: 85%;
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    border-radius: 2rem;
+    transform: rotate(3deg);
+    opacity: 0.1;
+    z-index: 0;
+  }
+  
+  .about-section__photo {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 2rem;
+    box-shadow: 0 20px 60px rgba(37, 99, 235, 0.15);
+  }
+  
+  /* Контент */
+  .about-section__intro {
+    color: #1e293b;
+    font-weight: 400;
+  }
+  
+  .about-section__intro::first-letter {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: var(--bs-primary);
+    float: left;
+    line-height: 1;
+    margin: 0.2rem 0.75rem 0 0;
+  }
+  
+  .about-section__text {
+    font-size: 1.125rem;
+  }
+  
+  /* Подпись */
+  .about-section__signature {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px dashed #e2e8f0;
+  }
+  
+  .about-section__signature-text {
+    color: #64748b;
+    font-style: italic;
+  }
+  
+  .about-section__signature-name {
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 1.125rem;
+  }
+  
+  /* Статистика */
+  .about-section__stats {
+    background: white;
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+  }
+  
+  .about-section__stat {
+    padding: 1rem;
+  }
+  
+  .about-section__stat-value {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    color: var(--bs-primary);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+  
+  .about-section__stat-label {
+    color: #64748b;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  
+  /* Адаптив */
+  @media (max-width: 575px) {
+    .about-section {
+      padding: 2.5rem 0;
+    }
+    
+    .about-section__photo {
+      max-width: 300px;
+    }
+    
+    .about-section__stats {
+      padding: 1.5rem 1rem;
+    }
+  }
+</style>

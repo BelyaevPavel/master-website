@@ -1,0 +1,117 @@
+---
+const advantages = [
+  {
+    icon: 'bi-shield-check',
+    title: 'Гарантия до 3 лет',
+    description: 'Официальная гарантия на все виды работ. Прописана в договоре.'
+  },
+  {
+    icon: 'bi-file-earmark-text',
+    title: 'Работа по договору',
+    description: 'Фиксируем сроки, стоимость и объём работ. Без скрытых доплат.'
+  },
+  {
+    icon: 'bi-camera',
+    title: 'Фотоотчёты',
+    description: 'Присылаю фото каждого этапа работ. Вы видите всё в реальном времени.'
+  },
+  {
+    icon: 'bi-tools',
+    title: 'Профессиональный инструмент',
+    description: 'Hilti, Bosch, Makita. Работаю быстро и без пыли.'
+  },
+  {
+    icon: 'bi-cash-coin',
+    title: 'Честные цены',
+    description: 'Фиксированная смета. Никаких "неожиданных" доплат в процессе.'
+  },
+  {
+    icon: 'bi-clock-history',
+    title: 'Соблюдение сроков',
+    description: 'За 10 лет ни одного объекта с просрочкой. Ценю ваше время.'
+  }
+];
+---
+
+<section class="why-us py-5" aria-labelledby="why-us-heading">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 id="why-us-heading" class="display-5 fw-bold mb-3">
+        Почему выбирают меня
+      </h2>
+      <p class="lead text-muted">
+        6 причин доверить ремонт профессионалу
+      </p>
+    </div>
+    
+    <div class="row g-4">
+      {advantages.map(adv => (
+        <div class="col-md-6 col-lg-4">
+          <div class="advantage-card h-100 p-4 rounded-3 bg-light animate-on-scroll">
+            <div class="advantage-icon-wrapper mb-3">
+              <i class={`bi ${adv.icon}`}></i>
+            </div>
+            <h3 class="h5 fw-bold mb-2">{adv.title}</h3>
+            <p class="text-muted mb-0">{adv.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .advantage-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid transparent;
+  }
+  
+  .advantage-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(37, 99, 235, 0.1);
+    border-color: rgba(37, 99, 235, 0.2);
+  }
+  
+  .advantage-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.75rem;
+  }
+  
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  
+  .animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  // Анимация появления при скролле
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.add('visible');
+          }, index * 100);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+      observer.observe(el);
+    });
+  });
+</script>

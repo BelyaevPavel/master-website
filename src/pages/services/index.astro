@@ -1,0 +1,33 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ServiceCard from '@/components/ServiceCard.astro';
+import services from '@/data/services.json';
+
+const title = 'Все услуги мастера по ремонту в Москве';
+const description = 'Полный список услуг: электромонтаж, натяжные потолки, укладка плитки. Цены, описание, фото.';
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="services-list py-5" aria-labelledby="services-heading">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h1 id="services-heading" class="display-5 fw-bold mb-3">Наши услуги</h1>
+        <p class="lead text-muted">Выберите нужный вид работ и узнайте подробности</p>
+      </div>
+
+      <div class="row g-4">
+        {services.map(service => (
+          <div class="col-md-6 col-lg-4">
+            <ServiceCard 
+              service={service} 
+              showImage={true} 
+              maxFeatures={3} 
+              iconSize="fs-2" 
+              buttonVariant="success"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,131 @@
+---
+// src/components/ServiceCard.astro
+import { Image } from 'astro:assets';
+import type { Service } from '@/types';
+import { getImage } from '@/utils/images';
+
+import MessengerButton from '@/components/MessengerButton.astro';
+
+interface Props {
+  service: Service;
+  /** Показывать ли изображение в шапке карточки */
+  showImage?: boolean;
+  /** Сколько первых пунктов из features показывать (0 — все) */
+  maxFeatures?: number;
+  /** Вариант оформления кнопки "Заказать" */
+  buttonVariant?: 'primary' | 'outline-primary' | 'success';
+  /** Текст для кнопки "Подробнее" */
+  detailLinkText?: string;
+  /** Размер иконки (можно передать класс Bootstrap) */
+  iconSize?: string;
+}
+
+const {
+  service,
+  showImage = false,
+  maxFeatures = 0,
+  buttonVariant = 'primary',
+  detailLinkText = 'Подробнее',
+  iconSize = 'fs-1',
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+
+// Загружаем изображение, только если showImage === true
+let mainImage = null;
+if (showImage && service.image) {
+  mainImage = await getImage(service.image);
+}
+
+// Определяем, сколько фич показывать
+const featuresToShow = maxFeatures > 0 ? service.features.slice(0, maxFeatures) : service.features;
+const hasHiddenFeatures = maxFeatures > 0 && service.features.length > maxFeatures;
+
+// Формируем ссылку WhatsApp
+const whatsappNumber = (await import('@/data/contacts.json')).default.whatsapp;
+const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Здравствуйте! Интересует услуга: ${service.title}`)}`;
+const serviceUrl = `${base}services/${service.id}`;
+---
+
+<div class="card h-100 shadow-sm overflow-hidden">
+  <!-- Изображение (опционально) -->
+  {showImage && mainImage && (
+    <a href={serviceUrl} class="d-block" aria-label={`Подробнее об услуге ${service.title}`}>
+      <div class="card-img-top" style="height: 200px; overflow: hidden;">
+        <Image
+          src={mainImage}
+          alt={service.title}
+          class="w-100 h-100"
+          style="object-fit: cover;"
+          loading="lazy"
+          decoding="async"
+          width="400"
+          height="200"
+        />
+      </div>
+    </a>
+  )}
+
+  <div class="card-body d-flex flex-column">
+    <!-- Иконка + заголовок -->
+    <div class="d-flex align-items-start mb-3">
+      <i class={`bi ${service.icon} ${iconSize} me-3 text-primary`}></i>
+      <div>
+        <h3 class="card-title h5">
+           <a href={serviceUrl} class="text-decoration-none text-reset" aria-label={`Подробнее об услуге ${service.title}`}>
+            {service.title}
+          </a>          
+        </h3>
+        <p class="card-text text-muted small">{service.description}</p>
+      </div>
+    </div>
+
+    <!-- Цена -->
+    <div class="mb-3">
+      <span class="fs-4 fw-bold text-primary">от {service.priceFrom} ₽</span>
+      <span class="text-muted"> / {service.priceUnit}</span>
+    </div>
+
+    <!-- Список особенностей -->
+    <ul class="list-unstyled mb-4">
+      {featuresToShow.map(feature => (
+        <li class="mb-1 small">
+          <i class="bi bi-check-circle-fill text-success me-2"></i>
+          {feature}
+        </li>
+      ))}
+      {hasHiddenFeatures && (
+        <li class="small text-muted">и ещё {service.features.length - maxFeatures}</li>
+      )}
+    </ul>
+
+    <!-- Кнопки -->
+    <div class="mt-auto d-flex gap-2 flex-wrap">
+      <a href={`${base}services/${service.id}`} class="btn btn-primary btn-outline-primary flex-grow-1">
+        {detailLinkText}
+        <i class="bi bi-arrow-right ms-1"></i>
+      </a>
+
+      <MessengerButton size="md" className='flex-grow-1' text='Заказать'/>
+    </div>
+  </div>
+</div>
+
+
+<style>  
+  .btn-primary {
+    background: white;
+    color: #2563eb;
+    border: none;
+    font-weight: 600;
+    padding: 0.875rem 1.75rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    background: #f8fafc;
+  }
+</style>

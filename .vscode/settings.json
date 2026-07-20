@@ -1,0 +1,33 @@
+{
+  // Автоматическое исправление ошибок при сохранении
+  "editor.codeActionsOnSave": {
+    "source.fixAll.prettier": "explicit",
+    "source.fixAll.eslint": "explicit"
+  },
+  "files.associations": {
+    "*.astro": "astro"
+  },
+  // Автоматическое форматирование при сохранении (включаем)
+  "editor.formatOnSave": true,
+  // Явно указываем Prettier как форматтер по умолчанию
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // Но для конкретных языков можно уточнить (если нужно)
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[astro]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

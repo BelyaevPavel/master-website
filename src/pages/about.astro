@@ -1,0 +1,70 @@
+---
+// src/pages/about.astro
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import About from '@/components/About.astro';
+import about from '@/data/about.json';
+import contacts from '@/data/contacts.json';
+
+const base = import.meta.env.BASE_URL;
+const photoUrl = new URL(`images/${about.photo}`, Astro.site).href;
+
+// Schema.org: Person (о мастере как физическом лице)
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": about.signature,
+  "jobTitle": "Частный мастер по ремонту",
+  "description": about.intro,
+  "image": photoUrl,
+  "worksFor": {
+    "@type": "LocalBusiness",
+    "@id": `${Astro.site.href}#business`
+  },
+  "knowsAbout": ["Электромонтаж", "Натяжные потолки", "Укладка плитки"],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": contacts.city,
+    "addressCountry": "RU"
+  }
+};
+
+// WebPage для SEO
+const pageSchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  "name": about.title,
+  "description": about.subtitle,
+  "inLanguage": "ru-RU",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Мастер по ремонту",
+    "url": Astro.site.href
+  }
+};
+---
+
+<BaseLayout
+  title={`${about.title} — Мастер по ремонту в ${contacts.city}`}
+  description={`${about.signature} — частный мастер по ремонту в ${contacts.city}. Электромонтаж, натяжные потолки, укладка плитки с гарантией до 3 лет.`}
+>
+  <!-- Хлебные крошки -->
+  <div class="container pt-4">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href={base}>Главная</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">
+          {about.title}
+        </li>
+      </ol>
+    </nav>
+  </div>
+
+  <!-- Основной контент -->
+  <About />
+  
+  <!-- JSON-LD разметка -->
+  <script type="application/ld+json" set:html={JSON.stringify(personSchema, null, 2)} />
+  <script type="application/ld+json" set:html={JSON.stringify(pageSchema, null, 2)} />
+</BaseLayout>

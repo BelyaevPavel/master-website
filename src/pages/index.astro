@@ -1,17 +1,178 @@
 ---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Hero from '@/components/Hero.astro';
+import Stats from '@/components/Stats.astro';
+import ServiceCard from '@/components/ServiceCard.astro';
+import PortfolioCard from '@/components/PortfolioCard.astro';
+import WhyUs from '@/components/WhyUs.astro';
+import TestimonialCard from '@/components/TestimonialCard.astro';
+import FAQ from '@/components/FAQ.astro';
+import ContactForm from '@/components/ContactForm.astro';
+import FinalCTA from '@/components/FinalCTA.astro';
 
+import services from '@/data/services.json';
+import portfolio from '@/data/portfolio.json';
+import testimonials from '@/data/testimonials.json';
+import faq from '@/data/faq.json';
+import contacts from '@/data/contacts.json';
+
+const base = import.meta.env.BASE_URL; 
+
+const title = `Мастер по ремонту в ${contacts.city_dative_case} — Электромонтаж, Потолки, Плитка | Гарантия 3 года`;
+const description = `Частный мастер по ремонту в ${contacts.city_dative_case}. Электромонтаж, натяжные потолки, укладка плитки от 800 ₽. 10+ лет опыта, 200+ объектов, гарантия 3 года. Звоните!`;
+
+// Schema.org разметка FAQ
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faq.map(item => ({
+    "@type": "Question",
+    "name": item.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": item.answer
+    }
+  }))
+};
+
+// Schema.org разметка услуг
+const servicesSchema = services.map(service => ({
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "serviceType": service.title,
+  "provider": {
+    "@type": "LocalBusiness",
+    "@id": `${Astro.url.origin}/#business`
+  },
+  "areaServed": {
+    "@type": "City",
+    "name": contacts.city
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": service.priceFrom,
+    "priceCurrency": "RUB",
+    "availability": "https://schema.org/InStock"
+  },
+  "description": service.description
+}));
+
+// Schema.org разметка отзывов
+const reviewsSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": `${Astro.url.origin}/#business`,
+  "review": testimonials.map(t => ({
+    "@type": "Review",
+    "author": { "@type": "Person", "name": t.name },
+    "datePublished": t.date,
+    "reviewBody": t.text,
+    "reviewRating": {
+      "@type": "Rating",
+      "ratingValue": "5",
+      "bestRating": "5"
+    }
+  }))
+};
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title={title} description={description}>
+  <!-- Дополнительные JSON-LD схемы -->
+  <script type="application/ld+json" set:html={JSON.stringify(servicesSchema)} />
+  <script type="application/ld+json" set:html={JSON.stringify(reviewsSchema)} />
+  
+  <!-- 1. Hero-секция -->
+  <Hero city={contacts.city} />
+  
+  <!-- 2. Trust Signals -->
+  <Stats />
+  
+  <!-- 3. Услуги -->
+  <section class="services py-5" aria-labelledby="services-heading">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 id="services-heading" class="display-5 fw-bold mb-3">
+          Наши услуги
+        </h2>
+        <p class="lead text-muted">
+          Выполняем все виды работ с гарантией качества и соблюдением сроков
+        </p>
+      </div>
+      
+      <div class="row g-4">
+        {services.map(service => (
+          <div class="col-md-6 col-lg-4">
+            <ServiceCard service={service} buttonVariant='success' iconSize="fs-1" />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- 4. Портфолио -->
+  <section class="portfolio py-5 bg-light" aria-labelledby="portfolio-heading">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 id="portfolio-heading" class="display-5 fw-bold mb-3">
+          Примеры наших работ
+        </h2>
+        <p class="lead text-muted">
+          Реальные объекты с фото «до» и «после»
+        </p>
+      </div>
+      
+      <div class="row g-4">
+        {portfolio.slice(0, 2).map(item => (
+          <div class="col-md-6">
+            <PortfolioCard item={item} />
+          </div>
+        ))}
+      </div>
+      
+      <div class="text-center mt-5">
+        <a href=`${base}portfolio/` class="btn btn-outline-primary btn-lg">
+          Смотреть все работы
+          <i class="bi bi-arrow-right ms-2"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+  
+  <!-- 5. Почему мы -->
+  <WhyUs />
+  
+  <!-- 6. Отзывы -->
+  <section class="testimonials py-5" aria-labelledby="testimonials-heading">
+    <div class="container">
+      <div class="text-center mb-5">
+        <h2 id="testimonials-heading" class="display-5 fw-bold mb-3">
+          Что говорят клиенты
+        </h2>
+        <div class="d-flex justify-content-center align-items-center gap-2">
+          <div class="text-warning fs-4">
+            ⭐⭐⭐⭐⭐
+          </div>
+          <span class="fw-bold">4.9</span>
+          <span class="text-muted">на основе 47 отзывов</span>
+        </div>
+      </div>
+      
+      <div class="row g-4">
+        {testimonials.map(testimonial => (
+          <div class="col-md-6">
+            <TestimonialCard testimonial={testimonial} />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- 7. FAQ -->
+  <FAQ />
+  
+  <!-- 8. Форма обратной связи -->
+  <ContactForm />
+  
+  <!-- 9. Финальный CTA -->
+  <FinalCTA />
+</BaseLayout>

@@ -1,0 +1,261 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import contacts from '@/data/contacts.json';
+
+// TODO: Заполните эти данные для соответствия 152-ФЗ
+const operator = {
+  // Выберите подходящий вариант:
+  // status: 'ИП Иванов Иван Иванович, ИНН 123456789012, ОГРНИП 321123456789012'
+  // status: 'Самозанятый Иванов Иван Иванович, ИНН 123456789012'
+  // status: 'Иванов Иван Иванович (физическое лицо)'
+  status: 'ЮРИДИЧЕСКИЙ СТАТУС И РЕКВИЗИТЫ (заполнить)',
+  address: 'АДРЕС ДЛЯ ПИСЕМ (заполнить)',
+  email: contacts.email,
+  phone: contacts.phone,
+  updatedAt: '28.07.2026' // обновляйте при изменении документа
+};
+
+const privacySchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Политика конфиденциальности",
+  "description": "Политика обработки персональных данных пользователей сайта",
+  "dateModified": "2026-07-28",
+  "inLanguage": "ru-RU",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Мастер по ремонту",
+    "url": Astro.url.origin
+  }
+};
+---
+
+<BaseLayout
+  title="Политика конфиденциальности — Мастер по ремонту в {contacts.city}"
+  description="Политика обработки персональных данных пользователей сайта. Информация о сборе, хранении и защите ваших данных."
+  noindex={true}
+>
+  <div class="legal-page py-5">
+    <div class="container">
+      <div class="row">
+        <article class="col-lg-8 mx-auto">
+          
+          <!-- Заголовок -->
+          <header class="legal-page__header mb-5 pb-4 border-bottom">
+            <nav aria-label="breadcrumb" class="mb-3">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Политика конфиденциальности</li>
+              </ol>
+            </nav>
+            
+            <h1 class="display-5 fw-bold mb-3">Политика конфиденциальности</h1>
+            
+            <div class="d-flex flex-wrap gap-3 text-muted small">
+              <span>
+                <i class="bi bi-calendar3 me-1" aria-hidden="true"></i>
+                <time datetime="2026-07-28">Дата публикации: {operator.updatedAt}</time>
+              </span>
+              <span>
+                <i class="bi bi-shield-check me-1" aria-hidden="true"></i>
+                Соответствует 152-ФЗ
+              </span>
+            </div>
+          </header>
+
+          <!-- Оператор данных -->
+          <section aria-labelledby="operator-heading" class="mb-5">
+            <div class="alert alert-warning d-flex align-items-start gap-3" role="alert">
+              <i class="bi bi-exclamation-triangle-fill fs-4 flex-shrink-0" aria-hidden="true"></i>
+              <div>
+                <strong class="d-block mb-1">Внимание! Это страница-заглушка.</strong>
+                <p class="mb-0 small">Для соответствия 152-ФЗ необходимо заполнить placeholder'ы (выделены жёлтым) реальными реквизитами и разместить на сайте cookie-баннер. После заполнения удалите этот блок предупреждения.</p>
+              </div>
+            </div>
+
+            <h2 id="operator-heading" class="h4 fw-bold mb-3">Оператор персональных данных</h2>
+            <p>
+              Настоящая Политика определяет порядок обработки персональных данных и меры по обеспечению их безопасности, предпринимаемые <span class="placeholder">{operator.status}</span> (далее — Оператор).
+            </p>
+            <address class="fst-normal text-muted">
+              Адрес: <span class="placeholder">{operator.address}</span><br>
+              Email: <a href="mailto:{operator.email}">{operator.email}</a><br>
+              Телефон: <a href="tel:{operator.phone}">{operator.phone}</a>
+            </address>
+          </section>
+
+          <!-- 1. Общие положения -->
+          <section aria-labelledby="general-heading" class="mb-5">
+            <h2 id="general-heading" class="h4 fw-bold mb-3">1. Общие положения</h2>
+            <ol class="legal-list">
+              <li>Настоящая Политика разработана в соответствии с Федеральным законом от 27.07.2006 № 152-ФЗ «О персональных данных».</li>
+              <li>Использование сайта означает согласие Пользователя с настоящей Политикой и условиями обработки персональных данных.</li>
+              <li>В случае несогласия с условиями Политики Пользователь должен прекратить использование сайта.</li>
+              <li>Политика действует в отношении всей информации, которую Оператор может получить о Пользователе во время использования сайта.</li>
+            </ol>
+          </section>
+
+          <!-- 2. Какие данные собираются -->
+          <section aria-labelledby="data-heading" class="mb-5">
+            <h2 id="data-heading" class="h4 fw-bold mb-3">2. Какие данные мы собираем</h2>
+            <p>Оператор обрабатывает следующие персональные данные:</p>
+            <ul class="legal-list">
+              <li><strong>Имя</strong> — для обращения к Пользователю.</li>
+              <li><strong>Номер телефона</strong> — для связи и ответа на заявку.</li>
+              <li><strong>Сообщение / комментарий</strong> — при добровольном указании в форме.</li>
+              <li><strong>Технические данные</strong> — IP-адрес, тип браузера, время посещения (собираются автоматически сервисами аналитики).</li>
+            </ul>
+            <p class="text-muted small mt-3">
+              <i class="bi bi-info-circle me-1" aria-hidden="true"></i>
+              Мы <strong>не собираем</strong> паспортные данные, номера банковских карт и другую чувствительную информацию.
+            </p>
+          </section>
+
+          <!-- 3. Цели обработки -->
+          <section aria-labelledby="purposes-heading" class="mb-5">
+            <h2 id="purposes-heading" class="h4 fw-bold mb-3">3. Цели обработки персональных данных</h2>
+            <ul class="legal-list">
+              <li>Связь с Пользователем для оказания услуг по ремонту.</li>
+              <li>Обработка входящих заявок и консультации.</li>
+              <li>Улучшение качества сайта с помощью аналитики.</li>
+              <li>Выполнение требований законодательства РФ.</li>
+            </ul>
+          </section>
+
+          <!-- 4. Правовые основания -->
+          <section aria-labelledby="legal-basis-heading" class="mb-5">
+            <h2 id="legal-basis-heading" class="h4 fw-bold mb-3">4. Правовые основания обработки</h2>
+            <ul class="legal-list">
+              <li>Согласие Пользователя на обработку персональных данных (ст. 6 ч. 1 п. 1 152-ФЗ).</li>
+              <li>Заключение и исполнение договора с Пользователем (ст. 6 ч. 1 п. 5 152-ФЗ).</li>
+              <li>Законные интересы Оператора — анализ посещаемости сайта.</li>
+            </ul>
+          </section>
+
+          <!-- 5. Передача третьим лицам -->
+          <section aria-labelledby="third-party-heading" class="mb-5">
+            <h2 id="third-party-heading" class="h4 fw-bold mb-3">5. Передача данных третьим лицам</h2>
+            <p>Оператор не передаёт персональные данные третьим лицам, за исключением следующих случаев:</p>
+            <ul class="legal-list">
+              <li>
+                <strong>Formspree</strong> — сервис для обработки заявок с сайта. Данные формы (имя, телефон, сообщение) передаются в зашифрованном виде для доставки Оператору.
+              </li>
+              <li>
+                <strong>Яндекс.Метрика</strong> — сбор обезличенных технических данных для аналитики.
+              </li>
+              <li>
+                <strong>Google Analytics 4</strong> — сбор обезличенных технических данных для аналитики.
+              </li>
+              <li>В случаях, прямо предусмотренных законодательством РФ.</li>
+            </ul>
+          </section>
+
+          <!-- 6. Cookie -->
+          <section aria-labelledby="cookies-heading" class="mb-5">
+            <h2 id="cookies-heading" class="h4 fw-bold mb-3">6. Cookie-файлы</h2>
+            <p>На сайте используются <strong>только</strong> cookie-файлы для аналитики:</p>
+            <ul class="legal-list">
+              <li><strong>Яндекс.Метрика</strong> (_ym_uid, _ym_d, _ym_isad и др.) — для анализа поведения пользователей.</li>
+              <li><strong>Google Analytics</strong> (_ga, _gid и др.) — для сбора статистики посещений.</li>
+            </ul>
+            <p>Cookie-файлы <strong>не используются</strong> для рекламных сетей, ретаргетинга или отслеживания между сайтами.</p>
+            <p class="text-muted small">
+              Пользователь может отключить cookie в настройках своего браузера, однако это может повлиять на корректность работы сервисов аналитики.
+            </p>
+          </section>
+
+          <!-- 7. Сроки хранения -->
+          <section aria-labelledby="retention-heading" class="mb-5">
+            <h2 id="retention-heading" class="h4 fw-bold mb-3">7. Сроки хранения персональных данных</h2>
+            <ul class="legal-list">
+              <li>Данные, отправленные через форму заявки, хранятся в течение периода, необходимого для оказания услуг, но не более 3 лет с момента последнего взаимодействия.</li>
+              <li>По истечении срока хранения или по запросу Пользователя данные подлежат уничтожению.</li>
+            </ul>
+          </section>
+
+          <!-- 8. Права пользователя -->
+          <section aria-labelledby="rights-heading" class="mb-5">
+            <h2 id="rights-heading" class="h4 fw-bold mb-3">8. Права субъекта персональных данных</h2>
+            <p>В соответствии со ст. 14 152-ФЗ, Пользователь имеет право:</p>
+            <ul class="legal-list">
+              <li>Получать информацию об обработке своих персональных данных.</li>
+              <li>Требовать уточнения, блокирования или уничтожения данных.</li>
+              <li>Отозвать согласие на обработку персональных данных.</li>
+              <li>Обжаловать действия Оператора в Роскомнадзор или в суд.</li>
+            </ul>
+            <p>Для реализации прав направьте запрос на email: <a href="mailto:{operator.email}">{operator.email}</a>.</p>
+          </section>
+
+          <!-- 9. Защита данных -->
+          <section aria-labelledby="security-heading" class="mb-5">
+            <h2 id="security-heading" class="h4 fw-bold mb-3">9. Защита персональных данных</h2>
+            <p>Оператор принимает необходимые организационные и технические меры для защиты персональных данных от неправомерного доступа, изменения, раскрытия или уничтожения, в том числе:</p>
+            <ul class="legal-list">
+              <li>Передача данных по защищённому протоколу HTTPS.</li>
+              <li>Ограничение доступа к данным.</li>
+              <li>Регулярный анализ угроз безопасности.</li>
+            </ul>
+          </section>
+
+          <!-- 10. Изменения -->
+          <section aria-labelledby="changes-heading" class="mb-5">
+            <h2 id="changes-heading" class="h4 fw-bold mb-3">10. Изменения в Политике</h2>
+            <p>Оператор имеет право вносить изменения в настоящую Политику без согласия Пользователя. Новая редакция вступает в силу с момента её размещения на сайте. Продолжение использования сайта после внесения изменений означает согласие Пользователя с новой редакцией.</p>
+          </section>
+
+          <!-- Футер документа -->
+          <footer class="legal-page__footer pt-4 mt-5 border-top text-muted small">
+            <p class="mb-0">
+              Последнее обновление: <time datetime="2026-07-28">{operator.updatedAt}</time>
+            </p>
+          </footer>
+
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/ld+json" set:html={JSON.stringify(privacySchema, null, 2)} />
+</BaseLayout>
+
+<style>
+  .legal-page {
+    background-color: #fff;
+  }
+  
+  .legal-page h2 {
+    scroll-margin-top: 100px; /* отступ при якорной навигации */
+  }
+  
+  .legal-list {
+    padding-left: 1.25rem;
+    line-height: 1.7;
+  }
+  
+  .legal-list li {
+    margin-bottom: 0.5rem;
+  }
+  
+  .legal-list li:last-child {
+    margin-bottom: 0;
+  }
+  
+  /* Placeholder — выделение данных, требующих заполнения */
+  .placeholder {
+    background-color: #fff3cd;
+    border: 1px dashed #ffc107;
+    padding: 0.1rem 0.5rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    color: #856404;
+  }
+  
+  /* Улучшаем отображение address */
+  address {
+    padding: 1rem 1.25rem;
+    background: #f8f9fa;
+    border-left: 3px solid var(--bs-primary);
+    border-radius: 0.375rem;
+    margin: 1rem 0;
+  }
+</style>

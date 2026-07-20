@@ -1,0 +1,201 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import ContactForm from '@/components/ContactForm.astro';
+import FinalCTA from '@/components/FinalCTA.astro';
+import FAQ from '@/components/FAQ.astro';   // адаптируем для приёма массива вопросов
+import { Image } from 'astro:assets';
+import { getImage } from '@/utils/images';
+import services from '@/data/services.json';
+import contacts from '@/data/contacts.json';
+
+import MessengerButton from '@/components/MessengerButton.astro';
+
+// Тип для услуги (можно вынести в /src/types)
+interface Service {
+  id: string;
+  icon: string;
+  title: string;
+  description: string;
+  priceFrom: number;
+  priceUnit: string;
+  features: string[];
+  detailedDescription: string;
+  image: string;
+  gallery: string[];
+  benefits: string[];
+  serviceFaq: { question: string; answer: string }[];
+  metaTitle: string;
+  metaDescription: string;
+}
+
+export async function getStaticPaths() {
+  return services.map(service => ({
+    params: { id: service.id },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props as { service: Service };
+
+// Загружаем главное изображение и галерею
+const mainImage = await getImage(service.image);
+const galleryImages = await Promise.all(
+  (service.gallery || []).map(img => getImage(img))
+);
+
+const base = import.meta.env.BASE_URL; 
+---
+
+<BaseLayout
+  title={service.metaTitle || `${service.title} — Мастер по ремонту`}
+  description={service.metaDescription || service.description}
+  canonical={`${Astro.url.origin}/services/${service.id}`}
+>
+  <!-- Хлебные крошки (опционально) -->
+  <nav aria-label="Breadcrumb" class="bg-light py-2">
+    <div class="container">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href=`${base}`>Главная</a></li>
+        <li class="breadcrumb-item"><a href=`${base}services/`>Услуги</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{service.title}</li>
+      </ol>
+    </div>
+  </nav>
+
+  <!-- Заголовок и краткая информация -->
+  <section class="service-hero py-5">
+    <div class="container">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-6">
+          <h1 class="display-5 fw-bold mb-3">{service.title}</h1>
+          <p class="lead">{service.description}</p>
+          <div class="mt-4">
+            <span class="fs-2 fw-bold text-primary">от {service.priceFrom} ₽</span>
+            <span class="text-muted fs-5"> / {service.priceUnit}</span>
+          </div>
+          <div class="mt-4 d-flex gap-3">
+            <a href={`tel:${contacts.phone}`} class="btn btn-primary btn-lg">
+              <i class="bi bi-telephone"></i> Позвонить
+            </a>
+
+          <MessengerButton size="lg"/>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <Image
+            src={mainImage}
+            alt={service.title}
+            class="img-fluid rounded shadow"
+            loading="eager"
+            decoding="async"
+            width="600"
+            height="400"
+          />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Подробное описание -->
+  <section class="service-description py-5 bg-light">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <h2 class="h3 fw-bold mb-4">Подробнее об услуге</h2>
+          <div class="content">
+            <p class="lead">{service.detailedDescription}</p>
+          </div>
+          <ul class="list-unstyled mt-4">
+            {service.features.map(feature => (
+              <li class="mb-2">
+                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                {feature}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Преимущества -->
+  {service.benefits && service.benefits.length > 0 && (
+    <section class="service-benefits py-5">
+      <div class="container">
+        <h2 class="h3 fw-bold text-center mb-4">Почему выбирают нас</h2>
+        <div class="row g-4">
+          {service.benefits.map(benefit => (
+            <div class="col-md-6 col-lg-3">
+              <div class="d-flex align-items-center gap-3 p-3 border rounded">
+                <i class="bi bi-check-circle-fill text-primary fs-2"></i>
+                <span>{benefit}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Галерея -->
+  {galleryImages.length > 0 && (
+    <section class="service-gallery py-5 bg-light">
+      <div class="container">
+        <h2 class="h3 fw-bold text-center mb-4">Примеры работ</h2>
+        <div class="row g-3">
+          {galleryImages.map((img, idx) => (
+            <div class="col-sm-6 col-lg-4">
+              <Image
+                src={img}
+                alt={`${service.title} — пример ${idx + 1}`}
+                class="img-fluid rounded shadow-sm"
+                loading="lazy"
+                decoding="async"
+                width="400"
+                height="300"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Специфический FAQ для услуги -->
+  {service.serviceFaq && service.serviceFaq.length > 0 && (
+    <section class="service-faq py-5">
+      <div class="container">
+        <h2 class="h3 fw-bold text-center mb-4">Часто задаваемые вопросы</h2>
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <FAQ items={service.serviceFaq} />
+          </div>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Форма связи и финальный CTA -->
+  <ContactForm />
+  <FinalCTA />
+</BaseLayout>
+
+
+
+<style>  
+  .btn-primary {
+    background: white;
+    color: #2563eb;
+    border: none;
+    font-weight: 600;
+    padding: 0.875rem 1.75rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    background: #f8fafc;
+  }
+</style>
