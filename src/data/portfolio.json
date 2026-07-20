@@ -1,32 +1,22 @@
 [
-    {
-      "id": 1,
-      "title": "Ремонт квартиры-студии 40 м²",
-      "description": "Полный ремонт в современном стиле: электропроводка, сантехника, отделка стен, полов, установка дверей и освещения.",
-      "beforeImage": "/images/portfolio/studio-before.webp",
-      "afterImage": "/images/portfolio/studio-after.webp",
-      "duration": "3 недели",
-      "area": "40 м²",
-      "tags": ["квартира", "студия", "полный-ремонт", "современный"]
-    },
-    {
-      "id": 2,
-      "title": "Замена электропроводки в частном доме",
-      "description": "Полная замена проводки, установка нового щитка с автоматами, прокладка интернет-кабеля и монтаж светодиодного освещения.",
-      "beforeImage": "/images/portfolio/electro-before.webp",
-      "afterImage": "/images/portfolio/electro-after.webp",
-      "duration": "5 дней",
-      "area": null,
-      "tags": ["дом", "электрика", "щиток", "освещение"]
-    },
-    {
-      "id": 3,
-      "title": "Установка сантехники и тёплого пола",
-      "description": "Монтаж системы тёплого пола, установка ванны, раковины, унитаза, смесителей и полотенцесушителя.",
-      "beforeImage": "/images/portfolio/plumbing-before.webp",
-      "afterImage": "/images/portfolio/plumbing-after.webp",
-      "duration": "4 дня",
-      "area": "12 м² (ванная комната)",
-      "tags": ["ванная", "сантехника", "тёплый-пол", "ремонт"]
-    }
-  ]
+  {
+    "id": 1,
+    "title": "Ванная комната 4м²",
+    "description": "Керамогранит 60×120, система выравнивания",
+    "beforeImage": "/images/portfolio/bathroom-1-before.webp",
+    "afterImage": "/images/portfolio/bathroom-1-after.webp",
+    "duration": "5 дней",
+    "area": "4 м²",
+    "tags": ["плитка", "ванная", "крупноформат"]
+  },
+  {
+    "id": 2,
+    "title": "Электрощит в квартире",
+    "description": "Сборка по ПУЭ, селективность, УЗО",
+    "beforeImage": "/images/portfolio/electric-1-before.webp",
+    "afterImage": "/images/portfolio/electric-1-after.webp",
+    "duration": "1 день",
+    "area": null,
+    "tags": ["электрика", "щит"]
+  }
+]
