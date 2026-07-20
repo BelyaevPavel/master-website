@@ -1,0 +1,8 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:astro/recommended",
+    "prettier", // эта строка отключает правила ESLint, которые конфликтуют с Prettier
+  ],
+}
