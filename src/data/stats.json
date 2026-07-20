@@ -1,0 +1,30 @@
+[
+    {
+      "id": "projects",
+      "icon": "bi-briefcase",
+      "value": 357,
+      "suffix": "",
+      "label": "Выполненных проектов"
+    },
+    {
+      "id": "clients",
+      "icon": "bi-people",
+      "value": 284,
+      "suffix": "",
+      "label": "Довольных клиентов"
+    },
+    {
+      "id": "experience",
+      "icon": "bi-clock-history",
+      "value": 12,
+      "suffix": " лет",
+      "label": "Опыта работы"
+    },
+    {
+      "id": "awards",
+      "icon": "bi-trophy",
+      "value": 8,
+      "suffix": "",
+      "label": "Наград и сертификатов"
+    }
+  ]
