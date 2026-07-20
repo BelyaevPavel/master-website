@@ -7,10 +7,16 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run validate && astro build",
-    "validate": "npx tsx src/scripts/validate-data.ts",
+    "build": "npm run validate && npm run test:unit && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "validate": "tsx src/scripts/validate-data.ts",
+    "test": "vitest",
+    "test:unit": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
+    "test:all": "npm run validate && npm run test:unit"
   },
   "dependencies": {
     "astro": "7.1.2",
@@ -18,7 +24,9 @@
   },
   "devDependencies": {
     "@types/node": "26.1.1",
-    "prettier": "3.9.5"
+    "@vitest/coverage-v8": "^4.1.10",
+    "prettier": "3.9.5",
+    "vitest": "4.1.10"
   },
   "allowScripts": {
     "esbuild@0.28.1": true
