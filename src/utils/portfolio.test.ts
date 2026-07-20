@@ -1,10 +1,6 @@
 // src/utils/portfolio.test.ts
 import { describe, it, expect } from 'vitest';
-import { 
-  extractUniqueTags, 
-  filterByTag, 
-  generateSlug 
-} from './portfolio';
+import { extractUniqueTags, filterByTag, generateSlug } from './portfolio';
 
 const mockPortfolio = [
   {
@@ -46,9 +42,7 @@ describe('extractUniqueTags', () => {
   });
 
   it('убирает дубликаты с разным регистром', () => {
-    const withDuplicates = [
-      { ...mockPortfolio[0], tags: ['Плитка', 'плитка', 'ПЛИТКА'] },
-    ];
+    const withDuplicates = [{ ...mockPortfolio[0], tags: ['Плитка', 'плитка', 'ПЛИТКА'] }];
     const tags = extractUniqueTags(withDuplicates as any);
     expect(tags).toEqual(['плитка']);
   });

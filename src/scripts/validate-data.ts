@@ -101,7 +101,9 @@ async function runBusinessRules(): Promise<string[]> {
     for (const t of testimonials) {
       const reviewDate = new Date(t.date);
       if (reviewDate > now) {
-        warnings.push(`⚠️ testimonials.json: отзыв от "${t.name}" имеет дату из будущего (${t.date})`);
+        warnings.push(
+          `⚠️ testimonials.json: отзыв от "${t.name}" имеет дату из будущего (${t.date})`
+        );
       }
     }
   } catch {
@@ -125,7 +127,10 @@ function formatZodError(error: ZodError, filename: string): string {
   error.issues.forEach((issue, index) => {
     // Формируем путь к полю
     const path = issue.path.length
-      ? issue.path.map((p) => (typeof p === 'number' ? `[${p}]` : p)).join('.').replace(/\.\[/g, '[')
+      ? issue.path
+          .map((p) => (typeof p === 'number' ? `[${p}]` : p))
+          .join('.')
+          .replace(/\.\[/g, '[')
       : 'корень файла';
 
     // Безопасное получение значения received (если есть)
@@ -169,9 +174,7 @@ async function main() {
     try {
       await access(filePath);
     } catch {
-      errorMessages.push(
-        colorize(`❌ ${label}: файл ${filename} НЕ НАЙДЕН в src/data/`, 'red')
-      );
+      errorMessages.push(colorize(`❌ ${label}: файл ${filename} НЕ НАЙДЕН в src/data/`, 'red'));
       totalErrors++;
       continue;
     }
@@ -196,7 +199,9 @@ async function main() {
       errorMessages.push('     - Одинарные кавычки вместо двойных');
       errorMessages.push('     - Незакрытая строка или скобка');
       errorMessages.push('');
-      errorMessages.push(`  🔧 Проверьте файл на сайте: ${colorize('https://jsonlint.com/', 'blue')}`);
+      errorMessages.push(
+        `  🔧 Проверьте файл на сайте: ${colorize('https://jsonlint.com/', 'blue')}`
+      );
       errorMessages.push('');
       totalErrors++;
       continue;
@@ -235,7 +240,9 @@ async function main() {
     console.log('');
     process.exit(1);
   } else {
-    console.log(colorize(`  🟢 Все JSON-файлы валидны! (${totalWarnings} предупреждений)`, 'green'));
+    console.log(
+      colorize(`  🟢 Все JSON-файлы валидны! (${totalWarnings} предупреждений)`, 'green')
+    );
     console.log('');
   }
 }

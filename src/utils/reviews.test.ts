@@ -1,10 +1,6 @@
 // src/utils/reviews.test.ts
 import { describe, it, expect } from 'vitest';
-import { 
-  getInitials, 
-  sortReviewsByDate, 
-  groupReviewsByService 
-} from './reviews';
+import { getInitials, sortReviewsByDate, groupReviewsByService } from './reviews';
 
 describe('getInitials', () => {
   it('берёт первые буквы имени и фамилии', () => {
@@ -66,17 +62,24 @@ describe('groupReviewsByService', () => {
 
   it('группирует отзывы по услугам', () => {
     const grouped = groupReviewsByService(reviews);
-    
+
     expect(Object.keys(grouped)).toHaveLength(2);
     expect(grouped['Электрика']).toHaveLength(2);
     expect(grouped['Плитка']).toHaveLength(1);
   });
 
   it('использует "Другое" для отзывов без услуги', () => {
-    const withEmpty = [...reviews, {
-      name: 'Г', text: '4', date: '2024-04-01', photo: null, service: '',
-    }];
-    
+    const withEmpty = [
+      ...reviews,
+      {
+        name: 'Г',
+        text: '4',
+        date: '2024-04-01',
+        photo: null,
+        service: '',
+      },
+    ];
+
     const grouped = groupReviewsByService(withEmpty);
     expect(grouped['Другое']).toHaveLength(1);
   });

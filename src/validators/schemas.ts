@@ -38,10 +38,7 @@ export const ContactSchema = z.object({
 
   whatsapp: z
     .string()
-    .regex(
-      /^7\d{10}$/,
-      '❌ WhatsApp должен быть без плюса: 79998887766 (7 + 10 цифр)'
-    ),
+    .regex(/^7\d{10}$/, '❌ WhatsApp должен быть без плюса: 79998887766 (7 + 10 цифр)'),
 
   telegram: z
     .string()
@@ -62,7 +59,10 @@ export const ContactSchema = z.object({
   socialMedia: z.object({
     // Разрешаем либо URL, либо пустую строку (как значение по умолчанию)
     vk: z.string().url('❌ VK: укажите полный URL (https://vk.com/...)').default(''),
-    instagram: z.string().url('❌ Instagram: укажите полный URL (https://instagram.com/...)').default(''),
+    instagram: z
+      .string()
+      .url('❌ Instagram: укажите полный URL (https://instagram.com/...)')
+      .default(''),
   }),
 });
 
@@ -101,9 +101,7 @@ export const ServiceSchema = z.object({
   priceUnit: nonEmptyString,
 
   features: z
-    .array(
-      z.string().min(3, '❌ Каждый пункт в списке возможностей минимум 3 символа')
-    )
+    .array(z.string().min(3, '❌ Каждый пункт в списке возможностей минимум 3 символа'))
     .min(1, '❌ У услуги должна быть хотя бы одна возможность (features)')
     .max(10, '❌ Слишком много пунктов в features (максимум 10)'),
 });
@@ -145,10 +143,7 @@ export const PortfolioItemSchema = z.object({
       z
         .string()
         .min(1, '❌ Тег не может быть пустым')
-        .regex(
-          /^[a-zа-яё0-9-]+$/i,
-          '❌ Тег: только буквы, цифры и дефисы'
-        )
+        .regex(/^[a-zа-яё0-9-]+$/i, '❌ Тег: только буквы, цифры и дефисы')
     )
     .min(1, '❌ У работы должен быть хотя бы один тег')
     .max(10, '❌ Слишком много тегов (максимум 10)'),
@@ -178,9 +173,7 @@ export const TestimonialSchema = z.object({
 
   photo: testimonialPhotoPath.nullable(), // теперь проще и понятнее
 
-  service: z
-    .string()
-    .min(3, '❌ Название услуги в отзыве слишком короткое'),
+  service: z.string().min(3, '❌ Название услуги в отзыве слишком короткое'),
 });
 
 export const TestimonialsArraySchema = z.array(TestimonialSchema);
@@ -193,10 +186,7 @@ export const FAQItemSchema = z.object({
     .string()
     .min(10, '❌ Вопрос слишком короткий (минимум 10 символов)')
     .max(200, '❌ Вопрос слишком длинный (максимум 200 символов)')
-    .refine(
-      (val) => val.endsWith('?'),
-      '❌ Вопрос должен заканчиваться знаком вопроса "?"'
-    ),
+    .refine((val) => val.endsWith('?'), '❌ Вопрос должен заканчиваться знаком вопроса "?"'),
 
   answer: z
     .string()
@@ -215,14 +205,9 @@ export const StatItemSchema = z.object({
   id: z
     .string()
     .min(2, '❌ ID статистики слишком короткий')
-    .regex(
-      /^[a-z0-9-]+$/,
-      '❌ ID статистики: только латинские буквы, цифры и дефисы'
-    ),
+    .regex(/^[a-z0-9-]+$/, '❌ ID статистики: только латинские буквы, цифры и дефисы'),
 
-  icon: z
-    .string()
-    .startsWith('bi-', '❌ Иконка должна начинаться с "bi-" (Bootstrap Icons)'),
+  icon: z.string().startsWith('bi-', '❌ Иконка должна начинаться с "bi-" (Bootstrap Icons)'),
 
   value: z
     .number({

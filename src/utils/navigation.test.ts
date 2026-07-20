@@ -33,7 +33,10 @@ describe('buildBreadcrumbs', () => {
     expect(crumbs).toHaveLength(3);
     expect(crumbs[0]).toEqual({ label: 'Главная', href: '/' });
     expect(crumbs[1]).toEqual({ label: 'Услуги', href: '/services/' });
-    expect(crumbs[2]).toEqual({ label: 'Электромонтаж', href: '/services/electric/' });
+    expect(crumbs[2]).toEqual({
+      label: 'Электромонтаж',
+      href: '/services/electric/',
+    });
   });
 
   it('использует сегмент URL как запасной вариант', () => {

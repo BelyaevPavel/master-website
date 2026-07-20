@@ -32,7 +32,9 @@ describe('buildWhatsAppUrl', () => {
 
   it('кодирует кириллицу в сообщении', () => {
     const url = buildWhatsAppUrl('79998887766', 'Здравствуйте!');
-    expect(url).toContain('%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!');
+    expect(url).toContain(
+      '%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!'
+    );
   });
 
   it('выбрасывает ошибку для неправильного формата', () => {
