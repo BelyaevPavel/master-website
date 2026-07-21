@@ -16,15 +16,22 @@
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
-    "test:all": "npm run validate && npm run test:unit"
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:report": "playwright show-report",
+    "test:all": "npm run validate && npm run test:unit && npm run build && npm run test:e2e"
   },
   "dependencies": {
     "astro": "7.1.2",
     "zod": "4.4.3"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.12.1",
+    "@playwright/test": "1.61.1",
     "@types/node": "26.1.1",
-    "@vitest/coverage-v8": "^4.1.10",
+    "@vitest/coverage-v8": "4.1.10",
     "prettier": "3.9.5",
     "prettier-plugin-astro": "0.14.1",
     "vitest": "4.1.10"
