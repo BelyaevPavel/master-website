@@ -1,0 +1,250 @@
+---
+// src/components/PortfolioCard.astro
+import type { PortfolioItem } from '@/types';
+
+interface Props {
+  item: PortfolioItem;
+}
+
+const { item } = Astro.props;
+
+// Форматируем теги для отображения
+const displayTags = item.tags.slice(0, 3); // Максимум 3 тега
+const hasMoreTags = item.tags.length > 3;
+---
+
+<article class="portfolio-card" aria-labelledby={`portfolio-${item.id}`}>
+  <!-- Изображения До/После -->
+  <div class="portfolio-card__images">
+    <div class="portfolio-card__image-wrapper">
+      <img 
+        src={item.beforeImage}
+        alt={`${item.title} — до ремонта`}
+        class="portfolio-card__image"
+        loading="lazy"
+        decoding="async"
+        width="600"
+        height="400"
+      />
+      <span class="portfolio-card__badge portfolio-card__badge--before">
+        ДО
+      </span>
+    </div>
+    
+    <div class="portfolio-card__image-wrapper">
+      <img 
+        src={item.afterImage}
+        alt={`${item.title} — после ремонта`}
+        class="portfolio-card__image"
+        loading="lazy"
+        decoding="async"
+        width="600"
+        height="400"
+      />
+      <span class="portfolio-card__badge portfolio-card__badge--after">
+        ПОСЛЕ
+      </span>
+    </div>
+  </div>
+  
+  <!-- Контент карточки -->
+  <div class="portfolio-card__content">
+    <h3 id={`portfolio-${item.id}`} class="portfolio-card__title">
+      {item.title}
+    </h3>
+    
+    <p class="portfolio-card__description">
+      {item.description}
+    </p>
+    
+    <!-- Мета-информация -->
+    <div class="portfolio-card__meta">
+      <span class="portfolio-card__meta-item">
+        <i class="bi bi-clock" aria-hidden="true"></i>
+        <span>{item.duration}</span>
+      </span>
+      
+      {item.area && (
+        <span class="portfolio-card__meta-item">
+          <i class="bi bi-rulers" aria-hidden="true"></i>
+          <span>{item.area}</span>
+        </span>
+      )}
+    </div>
+    
+    <!-- Теги -->
+    <div class="portfolio-card__tags">
+      {displayTags.map(tag => (
+        <span class="portfolio-card__tag">
+          {tag}
+        </span>
+      ))}
+      
+      {hasMoreTags && (
+        <span class="portfolio-card__tag portfolio-card__tag--more">
+          +{item.tags.length - 3}
+        </span>
+      )}
+    </div>
+  </div>
+</article>
+
+<style>
+  .portfolio-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .portfolio-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+  
+  /* Контейнер изображений */
+  .portfolio-card__images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    background: #e2e8f0;
+    aspect-ratio: 3 / 2;
+  }
+  
+  .portfolio-card__image-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .portfolio-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .portfolio-card:hover .portfolio-card__image {
+    transform: scale(1.05);
+  }
+  
+  /* Бейджи ДО/ПОСЛЕ */
+  .portfolio-card__badge {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .portfolio-card__badge--before {
+    background: #ef4444;
+    color: white;
+  }
+  
+  .portfolio-card__badge--after {
+    background: #10b981;
+    color: white;
+  }
+  
+  /* Контент */
+  .portfolio-card__content {
+    padding: 1.25rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .portfolio-card__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #1e293b;
+    line-height: 1.3;
+  }
+  
+  .portfolio-card__description {
+    color: #64748b;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    flex: 1;
+  }
+  
+  /* Мета-информация */
+  .portfolio-card__meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .portfolio-card__meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: #64748b;
+    font-size: 0.875rem;
+  }
+  
+  .portfolio-card__meta-item i {
+    color: #2563eb;
+    font-size: 1rem;
+  }
+  
+  /* Теги */
+  .portfolio-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .portfolio-card__tag {
+    background: #f1f5f9;
+    color: #475569;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  
+  .portfolio-card__tag:hover {
+    background: #e2e8f0;
+    color: #1e293b;
+  }
+  
+  .portfolio-card__tag--more {
+    background: transparent;
+    color: #94a3b8;
+    padding: 0.25rem 0.5rem;
+  }
+  
+  /* Адаптивность */
+  @media (max-width: 575px) {
+    .portfolio-card__images {
+      aspect-ratio: 16 / 10;
+    }
+    
+    .portfolio-card__content {
+      padding: 1rem;
+    }
+    
+    .portfolio-card__title {
+      font-size: 1.125rem;
+    }
+    
+    .portfolio-card__meta {
+      gap: 0.75rem;
+    }
+  }
+</style>

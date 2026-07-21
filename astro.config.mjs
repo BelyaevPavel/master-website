@@ -1,9 +1,31 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
-// https://astro.build/config
+// Переменные окружения доступны через import.meta.env
+const base = import.meta.env.PUBLIC_BASE || '/';
+const site = import.meta.env.PUBLIC_SITE || 'http://localhost:4321';
+
 export default defineConfig({
-    server: {
-      host: '0.0.0.0' 
-    }
-  });
+  site,
+  base,
+  integrations: [sitemap()],
+  output: 'static',
+  build: {
+    format: 'directory',
+  },
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          silenceDeprecations: [
+            'mixed-decls',
+            'color-functions',
+            'global-builtin',
+            'import',
+            'if-function',
+          ],
+        },
+      },
+    },
+  },
+});

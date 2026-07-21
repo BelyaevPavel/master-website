@@ -1,0 +1,111 @@
+---
+import stats from '@/data/stats.json';
+---
+
+<section class="stats-section py-5 bg-dark text-white" aria-labelledby="stats-heading">
+  <div class="container">
+    <h2 id="stats-heading" class="visually-hidden">Наши достижения в цифрах</h2>
+    
+    <div class="row text-center g-4">
+      {stats.map(stat => (
+        <div class="col-6 col-md-3">
+          <div class="stat-item">
+            <i class={`bi ${stat.icon} stat-icon`}></i>
+            <div class="stat-value" data-target={stat.value}>
+              0
+            </div>
+            <div class="stat-suffix">{stat.suffix}</div>
+            <div class="stat-label">{stat.label}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .stats-section {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  }
+  
+  .stat-item {
+    padding: 1.5rem 1rem;
+    transition: transform 0.3s ease;
+  }
+  
+  .stat-item:hover {
+    transform: translateY(-5px);
+  }
+  
+  .stat-icon {
+    font-size: 2.5rem;
+    color: #fbbf24;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+  
+  .stat-value {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    color: white;
+    line-height: 1;
+    display: inline-block;
+  }
+  
+  .stat-suffix {
+    font-size: 1.5rem;
+    color: #fbbf24;
+    display: inline-block;
+    font-weight: 700;
+  }
+  
+  .stat-label {
+    color: #cbd5e1;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+  }
+</style>
+
+<script>
+  // Анимация счётчиков при появлении в viewport
+  document.addEventListener('DOMContentLoaded', () => {
+    const animateCounter = (element, target) => {
+      const isDecimal = target % 1 !== 0;
+      const duration = 2000;
+      const startTime = performance.now();
+      
+      const step = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function для плавности
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = target * eased;
+        
+        element.textContent = isDecimal 
+          ? current.toFixed(1) 
+          : Math.floor(current).toLocaleString('ru-RU');
+        
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      };
+      
+      requestAnimationFrame(step);
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const target = parseFloat(entry.target.dataset.target);
+          animateCounter(entry.target, target);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    
+    document.querySelectorAll('.stat-value').forEach(el => {
+      observer.observe(el);
+    });
+  });
+</script>

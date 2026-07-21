@@ -4,6 +4,9 @@
     "source.fixAll.prettier": "explicit",
     "source.fixAll.eslint": "explicit"
   },
+  "files.associations": {
+    "*.astro": "astro"
+  },
   // Автоматическое форматирование при сохранении (включаем)
   "editor.formatOnSave": true,
   // Явно указываем Prettier как форматтер по умолчанию

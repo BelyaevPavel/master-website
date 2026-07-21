@@ -1,0 +1,60 @@
+---
+// Замените на ваши реальные ID
+const ymId = 'XXXXXXXX';      // ID Яндекс.Метрики
+const gaId = 'G-XXXXXXXXXX';   // ID Google Analytics 4
+---
+
+<!-- Яндекс.Метрика -->
+<script is:inline>
+  (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+  m[i].l=1*new Date();
+  for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+  k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+  (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+  ym({ymId}, "init", {
+    clickmap: true,
+    trackLinks: true,
+    accurateTrackBounce: true,
+    webvisor: true
+  });
+</script>
+
+<!-- Google Analytics 4 -->
+<script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{gaId}');
+</script>
+
+<!-- Отслеживание кликов по телефону и WhatsApp -->
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Отслеживание кликов по телефону
+    document.querySelectorAll('a[href^="tel:"]').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.ym) ym({ymId}, 'reachGoal', 'phone_click');
+        if (window.gtag) gtag('event', 'phone_click', { event_category: 'contact' });
+      });
+    });
+    
+    // Отслеживание кликов по WhatsApp
+    document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.ym) ym({ymId}, 'reachGoal', 'whatsapp_click');
+        if (window.gtag) gtag('event', 'whatsapp_click', { event_category: 'contact' });
+      });
+    });
+    
+    // Отслеживание отправки формы
+    const form = document.querySelector('form[action*="formspree"]');
+    if (form) {
+      form.addEventListener('submit', () => {
+        if (window.ym) ym({ymId}, 'reachGoal', 'form_submit');
+        if (window.gtag) gtag('event', 'form_submit', { event_category: 'contact' });
+      });
+    }
+  });
+</script>

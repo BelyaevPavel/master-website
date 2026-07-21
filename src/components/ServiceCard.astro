@@ -1,0 +1,37 @@
+---
+import type { Service } from '@/types';
+
+interface Props {
+  service: Service;
+}
+
+const { service } = Astro.props;
+---
+
+<div class="card h-100 shadow-sm">
+  <div class="card-body">
+    <div class="fs-1 mb-3">{service.icon}</div>
+    <h3 class="card-title h5">{service.title}</h3>
+    <p class="card-text text-muted">{service.description}</p>
+    
+    <div class="mb-3">
+      <span class="fs-4 fw-bold text-primary">от {service.priceFrom} ₽</span>
+      <span class="text-muted"> / {service.priceUnit}</span>
+    </div>
+    
+    <ul class="list-unstyled mb-4">
+      {service.features.map(feature => (
+        <li class="mb-2">
+          <i class="bi bi-check-circle-fill text-success me-2"></i>
+          {feature}
+        </li>
+      ))}
+    </ul>
+    
+    <a href={`https://wa.me/${(await import('@/data/contacts.json')).default.whatsapp}?text=${encodeURIComponent(`Здравствуйте! Интересует услуга: ${service.title}`)}`}
+       target="_blank" rel="noopener noreferrer"
+       class="btn btn-primary w-100">
+      Заказать
+    </a>
+  </div>
+</div>

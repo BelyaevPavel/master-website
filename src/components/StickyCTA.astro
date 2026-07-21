@@ -1,0 +1,42 @@
+---
+import contacts from '@/data/contacts.json';
+---
+
+<a href={`tel:${contacts.phone}`} 
+   class="sticky-cta d-lg-none"
+   aria-label="Позвонить мастеру">
+  <i class="bi bi-telephone-fill"></i>
+</a>
+
+<style>
+  .sticky-cta {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 20px rgba(37, 99, 235, 0.5);
+    z-index: 1000;
+    text-decoration: none;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 4px 20px rgba(37, 99, 235, 0.5);
+    }
+    50% {
+      box-shadow: 0 4px 30px rgba(37, 99, 235, 0.8);
+    }
+    100% {
+      box-shadow: 0 4px 20px rgba(37, 99, 235, 0.5);
+    }
+  }
+</style>
