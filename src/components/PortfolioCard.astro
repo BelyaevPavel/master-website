@@ -1,24 +1,67 @@
 ---
 // src/components/PortfolioCard.astro
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
 import type { PortfolioItem } from '@/types';
+
+import defaultFallback from '@/images/fallback.svg';
 
 interface Props {
   item: PortfolioItem;
 }
+
 
 const { item } = Astro.props;
 
 // Форматируем теги для отображения
 const displayTags = item.tags.slice(0, 3); // Максимум 3 тега
 const hasMoreTags = item.tags.length > 3;
+
+const imageModules = import.meta.glob<{ default: ImageMetadata }>(
+  '@/images/portfolio/*.{webp,jpg,png}'
+);
+
+
+console.log('🔑 Доступные ключи imageModules:');
+console.log(Object.keys(imageModules).map(key => `  ${key}`).join('\n'));
+
+/**
+ * Возвращает метаданные изображения или fallback.
+ * 
+ * @param imagePath — путь из JSON (например, '@/images/portfolio/bathroom-1-after.webp')
+ */
+async function getImageUrl(imagePath: string): Promise<ImageMetadata> {
+  // Нормализуем: убираем @/ и заменяем на /src/
+  let normalized = imagePath.replace(/^@\//, '/src/');
+  
+  // Если путь уже начинается с /src/ — оставляем как есть
+  // (но если там было /src/images/..., то ничего не меняем)
+  
+  // Проверяем, есть ли такой ключ
+  if (!imageModules[normalized]) {
+    console.warn(`⚠️ Изображение не найдено: ${imagePath} (искали как ${normalized})`);
+    return defaultFallback;
+  }
+
+  try {
+    const mod = await imageModules[normalized]();
+    return mod.default;
+  } catch (error) {
+    console.error(`❌ Ошибка загрузки: ${imagePath}`, error);
+    return defaultFallback;
+  }
+}
+
+const beforeSrc = await getImageUrl(item.beforeImage);
+const afterSrc = await getImageUrl(item.afterImage);
 ---
 
 <article class="portfolio-card" aria-labelledby={`portfolio-${item.id}`}>
   <!-- Изображения До/После -->
   <div class="portfolio-card__images">
     <div class="portfolio-card__image-wrapper">
-      <img 
-        src={item.beforeImage}
+      <Image 
+        src={beforeSrc}
         alt={`${item.title} — до ремонта`}
         class="portfolio-card__image"
         loading="lazy"
@@ -32,8 +75,8 @@ const hasMoreTags = item.tags.length > 3;
     </div>
     
     <div class="portfolio-card__image-wrapper">
-      <img 
-        src={item.afterImage}
+      <Image 
+        src={afterSrc}
         alt={`${item.title} — после ремонта`}
         class="portfolio-card__image"
         loading="lazy"

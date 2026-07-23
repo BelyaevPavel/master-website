@@ -3,8 +3,8 @@
     "id": 1,
     "title": "Ванная комната 4м²",
     "description": "Керамогранит 60×120, система выравнивания",
-    "beforeImage": "/images/portfolio/bathroom-1-before.webp",
-    "afterImage": "/images/portfolio/bathroom-1-after.webp",
+    "beforeImage": "@/images/portfolio/bathroom-1-before.jpg",
+    "afterImage": "@/images/portfolio/bathroom-1-after.jpg",
     "duration": "5 дней",
     "area": "4 м²",
     "tags": ["плитка", "ванная", "крупноформат"]
@@ -13,8 +13,8 @@
     "id": 2,
     "title": "Электрощит в квартире",
     "description": "Сборка по ПУЭ, селективность, УЗО",
-    "beforeImage": "/images/portfolio/electric-1-before.webp",
-    "afterImage": "/images/portfolio/electric-1-after.webp",
+    "beforeImage": "@/images/portfolio/electric-1-before.webp",
+    "afterImage": "@/images/portfolio/electric-1-after.webp",
     "duration": "1 день",
     "area": null,
     "tags": ["электрика", "щит"]
