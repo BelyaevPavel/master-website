@@ -36,7 +36,7 @@ const faqSchema = {
         const collapseId = `faq-collapse-${index}`;
         
         return (
-          <div class="accordion-item faq__item border-0 mb-3">
+          <div class="accordion-item faq__item border-0 mb-3" data-testid="faq-item">
             <h3 class="accordion-header" id={itemId}>
               <button
                 class="accordion-button collapsed faq__button"
@@ -45,6 +45,7 @@ const faqSchema = {
                 data-bs-target={`#${collapseId}`}
                 aria-expanded="false"
                 aria-controls={collapseId}
+                data-testid="faq-question"
               >
                 {item.question}
               </button>
@@ -55,6 +56,7 @@ const faqSchema = {
               class="accordion-collapse collapse"
               aria-labelledby={itemId}
               data-bs-parent="#faqAccordion"
+              data-testid="faq-answer"
             >
               <div class="accordion-body faq__answer">
                 {item.answer}
