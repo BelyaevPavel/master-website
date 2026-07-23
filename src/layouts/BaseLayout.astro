@@ -53,8 +53,8 @@ const localBusinessSchema = {
   
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": "55.7558",
-    "longitude": "37.6173"
+    "latitude": contacts.city_latitude,
+    "longitude": contacts.city_longitude
   },
   
   "areaServed": [{
@@ -69,7 +69,6 @@ const localBusinessSchema = {
     "closes": "22:00"
   },
   
-  // НОВОЕ: AggregateRating для звёзд в поиске
   "aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": "4.9",
@@ -78,7 +77,6 @@ const localBusinessSchema = {
     "worstRating": "1"
   },
   
-  // НОВОЕ: Person — информация о мастере
   "founder": {
     "@type": "Person",
     "name": "Иван Иванов",

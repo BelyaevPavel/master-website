@@ -16,8 +16,8 @@ import testimonials from '@/data/testimonials.json';
 import faq from '@/data/faq.json';
 import contacts from '@/data/contacts.json';
 
-const title = `Мастер по ремонту в ${contacts.city} — Электромонтаж, Потолки, Плитка | Гарантия 3 года`;
-const description = `Частный мастер по ремонту в ${contacts.city}. Электромонтаж, натяжные потолки, укладка плитки от 800 ₽. 10+ лет опыта, 200+ объектов, гарантия 3 года. Звоните!`;
+const title = `Мастер по ремонту в ${contacts.city_dative_case} — Электромонтаж, Потолки, Плитка | Гарантия 3 года`;
+const description = `Частный мастер по ремонту в ${contacts.city_dative_case}. Электромонтаж, натяжные потолки, укладка плитки от 800 ₽. 10+ лет опыта, 200+ объектов, гарантия 3 года. Звоните!`;
 
 // Schema.org разметка FAQ
 const faqSchema = {
@@ -82,7 +82,7 @@ const reviewsSchema = {
   <!-- 1. Hero-секция -->
   <Hero city={contacts.city} />
   
-  <!-- 2. Trust Signals — статистика (НОВЫЙ) -->
+  <!-- 2. Trust Signals -->
   <Stats />
   
   <!-- 3. Услуги -->
@@ -136,7 +136,7 @@ const reviewsSchema = {
     </div>
   </section>
   
-  <!-- 5. Почему мы (НОВЫЙ) -->
+  <!-- 5. Почему мы -->
   <WhyUs />
   
   <!-- 6. Отзывы -->
@@ -168,9 +168,9 @@ const reviewsSchema = {
   <!-- 7. FAQ -->
   <FAQ />
   
-  <!-- 8. Форма обратной связи (НОВЫЙ) -->
+  <!-- 8. Форма обратной связи -->
   <ContactForm />
   
-  <!-- 9. Финальный CTA (НОВЫЙ) -->
+  <!-- 9. Финальный CTA -->
   <FinalCTA />
 </BaseLayout>
