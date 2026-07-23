@@ -16,15 +16,15 @@ export default defineConfig({
   ],
 
   use: {
-    baseURL: `http://localhost:${PORT}`,
+    baseURL: `http://127.0.0.1:${PORT}`,
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
 
   webServer: {
-    command: 'npm run preview',
-    url: `http://localhost:${PORT}`,
+    command: `npm run preview -- --host 127.0.0.1 --port ${PORT}`,
+    url: `http://127.0.0.1:${PORT}`,
     reuseExistingServer: !process.env.CI,
     timeout: 120 * 1000,
   },
