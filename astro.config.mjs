@@ -6,8 +6,8 @@ const base = import.meta.env.PUBLIC_BASE || '/';
 const site = import.meta.env.PUBLIC_SITE || 'http://localhost:4321';
 
 export default defineConfig({
-  site,
-  base,
+  site: site,
+  base: base,
   integrations: [sitemap()],
   output: 'static',
   build: {
