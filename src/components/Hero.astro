@@ -2,12 +2,16 @@
 // src/components/Hero.astro
 import contacts from '@/data/contacts.json';
 import { buildPhoneLink, buildWhatsAppUrl, formatPhoneDisplay } from '@/utils/contacts';
+import { Image } from 'astro:assets';
+
+import masterPhoto from "@/images/master-photo.jpg";
 
 interface Props {
   city: string;
 }
 
 const { city } = Astro.props;
+const city_dative_case = contacts.city_dative_case;
 
 // Генерируем ссылки для CTA
 const phoneLink = buildPhoneLink(contacts.phone);
@@ -57,7 +61,7 @@ const advantages = [
         <!-- Главный заголовок (H1 — только один на странице!) -->
         <h1 id="hero-heading" class="hero__title">
           Мастер по ремонту
-          <span class="hero__title-accent">в {city}</span>
+          <span class="hero__title-accent">в {city_dative_case}</span>
         </h1>
         
         <!-- Подзаголовок -->
@@ -98,7 +102,7 @@ const advantages = [
             {advantages.map(adv => (
               <div class="col-12 col-sm-4">
                 <div class="hero__advantage d-flex align-items-center">
-                  <i class={`bi ${adv.icon} hero__advantage-icon`} aria-hidden="true"></i>
+                  <i class={`bi ${adv.icon} hero__advantage-icon`}></i>
                   <div class="hero__advantage-text">
                     <div class="hero__advantage-title">{adv.title}</div>
                     <div class="hero__advantage-desc">{adv.description}</div>
@@ -113,8 +117,8 @@ const advantages = [
       <!-- Правая колонка: фото мастера (только на desktop) -->
       <div class="col-lg-5 text-center d-none d-lg-block">
         <div class="hero__image-wrapper">
-          <img 
-            src="/images/master-photo.webp"
+          <Image 
+            src={masterPhoto}
             alt="Мастер по ремонту за работой"
             class="hero__image"
             width="400"

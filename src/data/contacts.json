@@ -4,6 +4,7 @@
   "telegram": "master_service",
   "email": "info@master-website.ru",
   "city": "Москва",
+  "city_dative_case": "Москве",
   "workingHours": "Ежедневно с 9:00 до 21:00",
   "socialMedia": {
     "vk": "https://vk.com/master_service",
