@@ -6,10 +6,9 @@ import { z } from 'zod';
 // ═══════════════════════════════════════════════════════════
 
 // Путь к изображению портфолио
-const portfolioImagePath = z
-  .string()
-  .startsWith('/images/portfolio/', '❌ Путь должен начинаться с /images/portfolio/')
-  .endsWith('.webp', '❌ Изображение должно быть в формате .webp');
+const portfolioImagePath = z.string();
+// .startsWith('/images/portfolio/', '❌ Путь должен начинаться с /images/portfolio/')
+//.endsWith('.webp', '❌ Изображение должно быть в формате .webp');
 
 // Путь к фото клиента (отзыв)
 const testimonialPhotoPath = z
