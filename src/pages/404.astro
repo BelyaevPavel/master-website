@@ -1,0 +1,111 @@
+---
+import Layout from '@/layouts/BaseLayout.astro';
+import { buildPhoneLink, buildWhatsAppUrl, formatPhoneDisplay } from '@/utils/contacts';
+import contacts from '@/data/contacts.json';
+
+// Очищаем номер телефона от символов для корректной работы tel:
+const cleanPhone = contacts.phone.replace(/\D/g, '');
+const phoneLink = buildPhoneLink(contacts.phone);
+const whatsappUrl = buildWhatsAppUrl(
+  contacts.whatsapp,
+  `Здравствуйте! Интересуют услуги мастера по ремонту в ${contacts.city_dative_case}.`
+);
+const phoneDisplay = formatPhoneDisplay(contacts.phone);
+---
+
+<Layout 
+  title="Страница не найдена (404) | Мастер по ремонту" 
+  description="К сожалению, запрашиваемая страница не существует. Вернитесь на главную или свяжитесь с мастером напрямую." 
+  noindex={true}
+>
+  <section class="error-section py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+          <!-- Визуальный акцент -->
+          <div class="error-icon-wrapper mb-4">
+            <i class="bi bi-tools text-primary"></i>
+          </div>
+          
+          <h1 class="display-4 fw-bold mb-3">Ой! Кажется, этой страницы нет</h1>
+          <p class="lead text-muted mb-4">
+            Возможно, вы перешли по устаревшей ссылке или просто опечатались. 
+            Не переживайте — я на связи и готов помочь вам с любым ремонтом!
+          </p>
+          
+          <!-- Основные навигационные CTA -->
+          <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mb-5">
+            <a href="/" class="btn btn-primary btn-lg px-4">
+              <i class="bi bi-house-door-fill me-2"></i>На главную
+            </a>
+            <a href="/services" class="btn btn-outline-primary btn-lg px-4">
+              <i class="bi bi-list-check me-2"></i>Мои услуги
+            </a>
+          </div>
+
+          <!-- Блок экстренной связи (Конверсионный элемент) -->
+          <div class="card border-primary bg-light shadow-sm">
+            <div class="card-body p-4">
+              <h2 class="h5 text-primary mb-3">
+                <i class="bi bi-telephone-fill me-2"></i>Случилась поломка?
+              </h2>
+              <p class="mb-3">Если у вас срочный заказ, звоните напрямую — я отвечу в течение 10 минут.</p>
+              <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
+                         <a 
+            href={phoneLink}
+            class="btn btn-light btn-lg hero__cta-primary"
+            aria-label={`Позвонить по номеру ${phoneDisplay}`}
+          >
+            <i class="bi bi-telephone-fill me-2" aria-hidden="true"></i>
+            <span class="hero__cta-text">
+              <span class="hero__cta-label d-none d-sm-inline">Позвонить:</span>
+              {phoneDisplay}
+            </span>
+          </a>
+          
+          <a 
+            href={whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-success btn-lg hero__cta-secondary"
+            aria-label="Написать в WhatsApp"
+          >
+            <i class="bi bi-whatsapp me-2" aria-hidden="true"></i>
+            Написать в WhatsApp
+          </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .error-section {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+  }
+  
+  .error-icon-wrapper {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+    background: rgba(37, 99, 235, 0.1); /* --bs-primary с прозрачностью */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .error-icon-wrapper:hover {
+    transform: rotate(15deg);
+  }
+  
+  .error-icon-wrapper i {
+    font-size: 3.5rem;
+  }
+</style>
