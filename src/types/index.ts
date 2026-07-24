@@ -4,6 +4,7 @@ export interface Contact {
   telegram: string;
   email: string;
   city: string;
+  city_dative_case: string;
   workingHours: string;
   socialMedia: {
     vk: string;
