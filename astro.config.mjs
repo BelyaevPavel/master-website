@@ -1,9 +1,8 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// Переменные окружения доступны через import.meta.env
-const base = import.meta.env.PUBLIC_BASE || '/';
-const site = import.meta.env.PUBLIC_SITE || 'http://localhost:4321';
+const base = process.env.PUBLIC_BASE || '/';
+const site = process.env.PUBLIC_SITE || 'http://localhost:4321';
 
 export default defineConfig({
   site: site,
