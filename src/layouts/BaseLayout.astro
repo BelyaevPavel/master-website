@@ -9,6 +9,10 @@ import contacts from '@/data/contacts.json';
 
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
+const base = import.meta.env.BASE_URL; 
+
+const googleVerifID = 'KXnYsUNw_r7ngySEb-8M1ZR7z4ebvf4CkIRWCQpATac';
+
 interface Props {
   title: string;
   description: string;
@@ -21,12 +25,13 @@ const {
   title, 
   description, 
   canonical = Astro.url.href,
-  image = '/images/og-default.jpg',
+  image = base+'/images/og-default.jpg',
   noindex = false
 } = Astro.props;
 
 const siteName = 'Мастер по ремонту';
 const fullImageUrl = new URL(image, Astro.url).href;
+const iconUrl = new URL(`${base}favicon.svg`, Astro.url).href;
 
 // Расширенная Schema.org разметка LocalBusiness + Person + AggregateRating
 const localBusinessSchema = {
@@ -36,7 +41,7 @@ const localBusinessSchema = {
   "name": "Мастер по ремонту",
   "alternateName": `Мастер по ремонту в ${contacts.city}`,
   "image": `${Astro.url.origin}/images/master-photo.webp`,
-  "logo": `${Astro.url.origin}/favicon.svg`,
+  "logo": iconUrl,
   "description": description,
   "telephone": contacts.phone,
   "email": contacts.email,
@@ -112,7 +117,7 @@ const localBusinessSchema = {
     )}
     
     <link rel="canonical" href={canonical} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={iconUrl} />
     
     <!-- Ускорение загрузки: Preconnect для внешних ресурсов -->
     <link rel="preconnect" href="https://mc.yandex.ru" />
@@ -138,7 +143,7 @@ const localBusinessSchema = {
     <script type="application/ld+json" set:html={JSON.stringify(localBusinessSchema, null, 2)} />
     
     <!-- Подтверждение собственности Google -->
-    <meta name="google-site-verification" content="KXnYsUNw_r7ngySEb-8M1ZR7z4ebvf4CkIRWCQpATac" />
+    <meta name="google-site-verification" content={googleVerifID} />
     
     <!-- Аналитика -->
     <Analytics />

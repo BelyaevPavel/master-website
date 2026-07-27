@@ -3,6 +3,9 @@
 import type { Contact } from '@/types';
 import { buildPhoneLink, buildWhatsAppUrl, formatPhoneDisplay } from '@/utils/contacts';
 
+const base = import.meta.env.BASE_URL; 
+const sitemapUrl = new URL(`${base}sitemap-index.xml`, Astro.url).href;
+
 interface Props {
   contacts: Contact;
 }
@@ -223,7 +226,7 @@ const serviceLinks = [
               <span class="footer__legal-separator" aria-hidden="true">•</span>
             </li>
             <li>
-              <a href="/sitemap-index.xml" class="footer__legal-link" target="_blank" rel="noopener">
+              <a href=`${sitemapUrl}` class="footer__legal-link" target="_blank" rel="noopener">
                 Карта сайта
               </a>
             </li>
