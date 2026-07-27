@@ -5,13 +5,15 @@ interface Props {
   city: string;
 }
 
+const base = import.meta.env.BASE_URL; 
+
 const { city } = Astro.props;
 const currentUrl = Astro.url.pathname;
 ---
 
 <header class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
   <div class="container">
-    <a href="/" class="navbar-brand fw-bold">
+    <a href=`${base}` class="navbar-brand fw-bold">
       Мастер по ремонту • {city}
     </a>
     
@@ -26,10 +28,10 @@ const currentUrl = Astro.url.pathname;
     
     <nav class="collapse navbar-collapse" id="mainNav">
       <ul class="navbar-nav ms-auto align-items-lg-center">
-        <li class="nav-item"><a href="/" class="nav-link">Главная</a></li>
-        <li class="nav-item"><a href="/services/" class="nav-link">Услуги</a></li>
-        <li class="nav-item"><a href="/portfolio/" class="nav-link">Портфолио</a></li>
-        <li class="nav-item"><a href="/about/" class="nav-link">О мастере</a></li>
+        <li class="nav-item"><a href=`${base}` class="nav-link">Главная</a></li>
+        <li class="nav-item"><a href=`${base}services/` class="nav-link">Услуги</a></li>
+        <li class="nav-item"><a href=`${base}portfolio/` class="nav-link">Портфолио</a></li>
+        <li class="nav-item"><a href=`${base}about/` class="nav-link">О мастере</a></li>
         <li class="nav-item ms-lg-3">
           <a href={`tel:${contacts.phone}`} class="btn btn-outline-primary me-2">
             <i class="bi bi-telephone"></i> Позвонить
