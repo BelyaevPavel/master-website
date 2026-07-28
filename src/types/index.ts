@@ -1,16 +1,20 @@
-export interface Contact {
-  phone: string;
-  whatsapp: string;
-  telegram: string;
-  email: string;
-  city: string;
-  city_dative_case: string;
-  workingHours: string;
-  socialMedia: {
-    vk: string;
-    instagram: string;
-  };
-}
+export type MessengerType = 'whatsapp' | 'telegram' | 'vkontakte';
+
+// export interface Contact {
+//   phone: string;
+//   whatsapp: string;
+//   telegram: string; // может быть username или полная ссылка
+//   vk: string; // полная ссылка на страницу/группу
+//   preferredMessenger?: MessengerType;
+//   email: string;
+//   city: string;
+//   city_dative_case: string;
+//   workingHours: string;
+//   socialMedia: {
+//     vk: string;
+//     instagram: string;
+//   };
+// }
 
 export interface Service {
   id: string;

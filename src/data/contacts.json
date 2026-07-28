@@ -2,6 +2,8 @@
   "phone": "+79998887766",
   "whatsapp": "79998887766",
   "telegram": "master_service",
+  "vk": "https://vk.me/master_service",
+  "preferredMessenger": "telegram",
   "email": "info@master-website.ru",
   "city": "Белорецк",
   "city_dative_case": "Белорецке",

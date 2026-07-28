@@ -1,6 +1,8 @@
 ---
 import contacts from '@/data/contacts.json';
 
+import MessengerButton from '@/components/MessengerButton.astro';
+
 interface Props {
   city: string;
 }
@@ -38,11 +40,7 @@ const currentUrl = Astro.url.pathname;
           </a>
         </li>
         <li class="nav-item">
-          <a href={`https://wa.me/${contacts.whatsapp}?text=${encodeURIComponent('Здравствуйте! Интересуют услуги ремонта.')}`} 
-             target="_blank" rel="noopener noreferrer"
-             class="btn btn-success">
-            <i class="bi bi-whatsapp"></i> WhatsApp
-          </a>
+          <MessengerButton size="md" className='me-2' text='Написать'/>
         </li>
       </ul>
     </nav>

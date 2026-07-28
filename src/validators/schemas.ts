@@ -10,6 +10,15 @@ const portfolioImagePath = z.string();
 // .startsWith('/images/portfolio/', '❌ Путь должен начинаться с /images/portfolio/')
 //.endsWith('.webp', '❌ Изображение должно быть в формате .webp');
 
+const imagePath = z
+  .string()
+  .regex(
+    /^@\/images\/services\/.+\.(webp|jpg|png)$/,
+    '❌ Путь должен быть в формате @/images/services/...'
+  )
+  .optional()
+  .nullable();
+
 // Путь к фото клиента (отзыв)
 const testimonialPhotoPath = z
   .string()
@@ -43,66 +52,86 @@ export const ContactSchema = z.object({
     .string()
     .regex(
       /^[a-zA-Z0-9_]{5,32}$/,
-      '❌ Telegram username: латиница, цифры, подчёркивание, 5-32 символа (без @)'
+      '❌ Telegram username: латиница, цифры, подчёркивание, 5–32 символа (без @)'
     ),
+
+  vk: z.string().url('❌ VK: укажите полный URL (https://vk.me/...)'),
+
+  preferredMessenger: z.enum(['whatsapp', 'telegram', 'vkontakte']).optional().default('whatsapp'),
 
   email: z
     .string()
     .email('❌ Некорректный формат email')
-    .transform((val) => val.toLowerCase()), // нормализация email
+    .transform((val) => val.toLowerCase()),
 
   city: nonEmptyString.min(2, '❌ Название города слишком короткое (минимум 2 символа)'),
+  city_dative_case: nonEmptyString.min(2, '❌ Название в дательном падеже обязательно'),
+  city_latitude: z.string().regex(/^-?\d+(\.\d+)?$/, '❌ Широта должна быть числом в строке'),
+  city_longitude: z.string().regex(/^-?\d+(\.\d+)?$/, '❌ Долгота должна быть числом в строке'),
 
   workingHours: nonEmptyString.min(3, '❌ Часы работы не могут быть пустыми'),
 
   socialMedia: z.object({
-    // Разрешаем либо URL, либо пустую строку (как значение по умолчанию)
-    vk: z.string().url('❌ VK: укажите полный URL (https://vk.com/...)').default(''),
-    instagram: z
-      .string()
-      .url('❌ Instagram: укажите полный URL (https://instagram.com/...)')
-      .default(''),
+    vk: z.string().url('❌ VK: укажите полный URL').default(''),
+    instagram: z.string().url('❌ Instagram: укажите полный URL').default(''),
   }),
 });
 
 // ═══════════════════════════════════════════════════════════
 // 2. Схема для services.json (массив)
 // ═══════════════════════════════════════════════════════════
+const ServiceFaqItemSchema = z.object({
+  question: z.string().min(5, '❌ Вопрос слишком короткий'),
+  answer: z.string().min(10, '❌ Ответ слишком короткий'),
+});
+
 export const ServiceSchema = z.object({
+  // ─── обязательные поля ──────────────────────────────────
   id: z
     .string()
     .min(2, '❌ ID услуги слишком короткий')
-    .regex(
-      /^[a-z0-9-]+$/,
-      '❌ ID услуги: только латинские буквы, цифры и дефисы (например, "electric")'
-    ),
+    .regex(/^[a-z0-9-]+$/, '❌ Только латиница, цифры и дефисы'),
 
   icon: nonEmptyString,
 
   title: z
     .string()
-    .min(3, '❌ Название услуги слишком короткое (минимум 3 символа)')
-    .max(60, '❌ Название услуги слишком длинное (максимум 60 символов)'),
+    .min(3, '❌ Название минимум 3 символа')
+    .max(60, '❌ Название максимум 60 символов'),
 
   description: z
     .string()
-    .min(10, '❌ Описание услуги слишком короткое (минимум 10 символов)')
-    .max(200, '❌ Описание услуги слишком длинное (максимум 200 символов)'),
+    .min(10, '❌ Описание минимум 10 символов')
+    .max(200, '❌ Описание максимум 200 символов'),
 
   priceFrom: z
-    .number({
-      invalid_type_error:
-        '❌ Цена (priceFrom) должна быть ЧИСЛОМ без кавычек! Например: 1500, а не "1500"',
-    })
+    .number()
     .min(0, '❌ Цена не может быть отрицательной')
-    .max(9999999, '❌ Цена подозрительно большая, проверьте'),
+    .max(9999999, '❌ Слишком большая цена'),
 
   priceUnit: nonEmptyString,
 
   features: z
-    .array(z.string().min(3, '❌ Каждый пункт в списке возможностей минимум 3 символа'))
-    .min(1, '❌ У услуги должна быть хотя бы одна возможность (features)')
-    .max(10, '❌ Слишком много пунктов в features (максимум 10)'),
+    .array(z.string().min(3, '❌ Пункт features минимум 3 символа'))
+    .min(1, '❌ Хотя бы один пункт')
+    .max(10, '❌ Максимум 10 пунктов'),
+
+  // ─── опциональные поля ──────────────────────────────────
+  detailedDescription: z.string().min(20, '❌ Полное описание минимум 20 символов').optional(),
+
+  image: imagePath,
+
+  gallery: z.array(imagePath).max(10, '❌ Не более 10 изображений в галерее').optional(),
+
+  benefits: z
+    .array(z.string().min(5, '❌ Преимущество минимум 5 символов'))
+    .max(10, '❌ Не более 10 преимуществ')
+    .optional(),
+
+  serviceFaq: z.array(ServiceFaqItemSchema).max(20, '❌ Не более 20 FAQ').optional(),
+
+  metaTitle: z.string().max(70, '❌ Meta title максимум 70 символов').optional(),
+  metaDescription: z.string().max(160, '❌ Meta description максимум 160 символов').optional(),
 });
 
 export const ServicesArraySchema = z
@@ -115,7 +144,7 @@ export const ServicesArraySchema = z
 export const PortfolioItemSchema = z.object({
   id: z
     .number({
-      invalid_type_error: '❌ ID работы должен быть числом (без кавычек)',
+      message: '❌ ID работы должен быть числом (без кавычек)',
     })
     .int('❌ ID работы должен быть целым числом')
     .positive('❌ ID работы должен быть положительным числом'),
@@ -210,7 +239,7 @@ export const StatItemSchema = z.object({
 
   value: z
     .number({
-      invalid_type_error: '❌ Значение статистики должно быть числом (без кавычек)',
+      message: '❌ Значение статистики должно быть числом (без кавычек)',
     })
     .positive('❌ Значение должно быть положительным'),
 

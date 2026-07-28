@@ -4,6 +4,8 @@ import { Image } from 'astro:assets';
 import type { Service } from '@/types';
 import { getImage } from '@/utils/images';
 
+import MessengerButton from '@/components/MessengerButton.astro';
+
 interface Props {
   service: Service;
   /** Показывать ли изображение в шапке карточки */
@@ -103,14 +105,8 @@ const serviceUrl = `${base}services/${service.id}`;
         {detailLinkText}
         <i class="bi bi-arrow-right ms-1"></i>
       </a>
-      <a
-        href={whatsappLink}
-        target="_blank"
-        rel="noopener noreferrer"
-        class={`btn btn-${buttonVariant} flex-grow-1`}
-      >
-        <i class="bi bi-whatsapp"></i> Заказать
-      </a>
+
+      <MessengerButton size="md" className='flex-grow-1' text='Заказать'/>
     </div>
   </div>
 </div>

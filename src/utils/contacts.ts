@@ -1,5 +1,8 @@
 // src/utils/contacts.ts
 
+import type { MessengerType } from '@/types';
+import type { Contact } from '@/validators/schemas';
+
 /**
  * Генерирует кликабельную ссылку для звонка
  * @example buildPhoneLink('+7 999 888-77-66') => "tel:+79998887766"
@@ -43,4 +46,68 @@ export function formatPhoneDisplay(phone: string): string {
 
   // +7 (XXX) XXX-XX-XX
   return `+${digits[0]} (${digits.substring(1, 4)}) ${digits.substring(4, 7)}-${digits.substring(7, 9)}-${digits.substring(9, 11)}`;
+}
+
+/**
+ * Генерирует ссылку для выбранного мессенджера.
+ * @param type - тип мессенджера ('whatsapp', 'telegram', 'vkontakte')
+ * @param contacts - объект с контактами (должен содержать соответствующие поля)
+ * @param message - опциональное сообщение (поддерживается только для WhatsApp)
+ * @returns URL для перехода в мессенджер
+ * @throws {Error} если тип не поддерживается или отсутствуют данные
+ */
+export function getMessengerLink(type: MessengerType, contacts: Contact, message?: string): string {
+  switch (type) {
+    case 'whatsapp':
+      return buildWhatsAppUrl(contacts.whatsapp, message);
+
+    case 'telegram': {
+      const tg = contacts.telegram;
+      if (!tg) throw new Error('Telegram контакт не указан в contacts.json');
+      // Если уже полная ссылка — возвращаем как есть
+      if (tg.startsWith('http://') || tg.startsWith('https://')) {
+        return tg;
+      }
+      // Иначе считаем, что это username (убираем @, если есть)
+      const username = tg.replace(/^@/, '');
+      return `https://t.me/${username}`;
+    }
+
+    case 'vkontakte': {
+      const vk = contacts.vk;
+      if (!vk) throw new Error('VK контакт не указан в contacts.json');
+      return vk; // ожидается полная ссылка
+    }
+
+    default:
+      throw new Error(`Неподдерживаемый тип мессенджера: ${type}`);
+  }
+}
+
+/**
+ * Возвращает конфигурацию для мессенджера: иконку, цвет, дефолтный текст.
+ */
+export function getMessengerConfig(type: MessengerType): {
+  icon: string;
+  color: string;
+  defaultText: string;
+} {
+  const configs = {
+    whatsapp: {
+      icon: 'bi-whatsapp',
+      color: '#25D366',
+      defaultText: 'Написать в WhatsApp',
+    },
+    telegram: {
+      icon: 'bi-telegram',
+      color: '#0088cc',
+      defaultText: 'Написать в Telegram',
+    },
+    vkontakte: {
+      icon: 'bi-vk',
+      color: '#4C75A3',
+      defaultText: 'Написать в ВКонтакте',
+    },
+  };
+  return configs[type] || configs.whatsapp; // fallback
 }

@@ -3,6 +3,7 @@
 import contacts from '@/data/contacts.json';
 import { buildPhoneLink, buildWhatsAppUrl, formatPhoneDisplay } from '@/utils/contacts';
 import { Image } from 'astro:assets';
+import MessengerButton from '@/components/MessengerButton.astro';
 
 import masterPhoto from "@/images/master-photo.jpg";
 
@@ -84,16 +85,7 @@ const advantages = [
             </span>
           </a>
           
-          <a 
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-success btn-lg hero__cta-secondary"
-            aria-label="Написать в WhatsApp"
-          >
-            <i class="bi bi-whatsapp me-2" aria-hidden="true"></i>
-            Написать в WhatsApp
-          </a>
+          <MessengerButton size="lg"/>
         </div>
         
         <!-- Преимущества -->

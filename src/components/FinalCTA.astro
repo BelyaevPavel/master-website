@@ -1,5 +1,6 @@
 ---
 import contacts from '@/data/contacts.json';
+import MessengerButton from '@/components/MessengerButton.astro';
 
 // Формируем URL для WhatsApp заранее
 const whatsappUrl = `https://wa.me/${contacts.whatsapp}?text=${encodeURIComponent(
@@ -30,15 +31,8 @@ const whatsappUrl = `https://wa.me/${contacts.whatsapp}?text=${encodeURIComponen
             <i class="bi bi-telephone-fill me-2"></i>
             Позвонить сейчас
           </a>
-          <a 
-            href={whatsappUrl} 
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-success btn-lg px-4"
-          >
-            <i class="bi bi-whatsapp me-2"></i>
-            Написать в WhatsApp
-          </a>
+          
+          <MessengerButton size="lg" />
         </div>
       </div>
     </div>
