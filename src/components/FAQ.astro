@@ -1,12 +1,19 @@
 ---
 // src/components/FAQ.astro
-import faq from '@/data/faq.json';
+import defaultFaq from '@/data/faq.json';
 
-// Генерируем JSON-LD для Schema.org (FAQPage)
+interface Props {
+  items?: { question: string; answer: string }[];
+}
+
+const { items: propItems } = Astro.props;
+const faqData = propItems ?? defaultFaq;
+
+// Генерируем JSON‑LD для Schema.org (FAQPage) на основе актуальных данных
 const faqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
-  'mainEntity': faq.map(item => ({
+  'mainEntity': faqData.map(item => ({
     '@type': 'Question',
     'name': item.question,
     'acceptedAnswer': {
@@ -31,7 +38,7 @@ const faqSchema = {
     
     <!-- Аккордеон -->
     <div class="accordion faq__accordion" id="faqAccordion">
-      {faq.map((item, index) => {
+      {faqData.map((item, index) => {
         const itemId = `faq-${index}`;
         const collapseId = `faq-collapse-${index}`;
         
