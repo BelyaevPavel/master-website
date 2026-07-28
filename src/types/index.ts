@@ -20,6 +20,13 @@ export interface Service {
   priceFrom: number;
   priceUnit: string;
   features: string[];
+  detailedDescription?: string;
+  image?: string;
+  gallery?: string[];
+  benefits?: string[];
+  serviceFaq?: { question: string; answer: string }[];
+  metaTitle?: string;
+  metaDescription?: string;
 }
 
 export interface PortfolioItem {
