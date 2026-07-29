@@ -101,7 +101,7 @@ const serviceUrl = `${base}services/${service.id}`;
 
     <!-- Кнопки -->
     <div class="mt-auto d-flex gap-2 flex-wrap">
-      <a href={`${base}services/${service.id}`} class="btn btn-outline-primary flex-grow-1">
+      <a href={`${base}services/${service.id}`} class="btn btn-primary btn-outline-primary flex-grow-1">
         {detailLinkText}
         <i class="bi bi-arrow-right ms-1"></i>
       </a>
@@ -110,3 +110,22 @@ const serviceUrl = `${base}services/${service.id}`;
     </div>
   </div>
 </div>
+
+
+<style>  
+  .btn-primary {
+    background: white;
+    color: #2563eb;
+    border: none;
+    font-weight: 600;
+    padding: 0.875rem 1.75rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    background: #f8fafc;
+  }
+</style>
