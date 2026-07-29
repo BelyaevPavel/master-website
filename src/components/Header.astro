@@ -35,14 +35,40 @@ const currentUrl = Astro.url.pathname;
         <li class="nav-item"><a href=`${base}portfolio/` class="nav-link">Портфолио</a></li>
         <li class="nav-item"><a href=`${base}about/` class="nav-link">О мастере</a></li>
         <li class="nav-item ms-lg-3">
-          <a href={`tel:${contacts.phone}`} class="btn btn-outline-primary me-2">
+          <a href={`tel:${contacts.phone}`} class="btn btn-primary btn-outline-primary me-2 w-100 w-lg-auto">
             <i class="bi bi-telephone"></i> Позвонить
           </a>
         </li>
         <li class="nav-item">
-          <MessengerButton size="md" className='me-2' text='Написать'/>
+          <MessengerButton size="md" className='me-2 w-100 w-lg-auto' text='Написать'/>
         </li>
       </ul>
     </nav>
   </div>
 </header>
+
+<style>  
+  .btn-primary {
+    background: white;
+    color: #2563eb;
+    border: none;
+    font-weight: 600;
+    padding: 0.875rem 1.75rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    background: #f8fafc;
+  }
+</style>
+
+<style is:global>
+  @media (max-width: 400px) {
+    .navbar-brand {
+      font-size: 0.95rem;
+    }
+  }
+</style>
