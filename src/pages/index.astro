@@ -16,6 +16,8 @@ import testimonials from '@/data/testimonials.json';
 import faq from '@/data/faq.json';
 import contacts from '@/data/contacts.json';
 
+const base = import.meta.env.BASE_URL; 
+
 const title = `Мастер по ремонту в ${contacts.city_dative_case} — Электромонтаж, Потолки, Плитка | Гарантия 3 года`;
 const description = `Частный мастер по ремонту в ${contacts.city_dative_case}. Электромонтаж, натяжные потолки, укладка плитки от 800 ₽. 10+ лет опыта, 200+ объектов, гарантия 3 года. Звоните!`;
 
@@ -120,7 +122,7 @@ const reviewsSchema = {
       </div>
       
       <div class="row g-4">
-        {portfolio.slice(0, 4).map(item => (
+        {portfolio.slice(0, 2).map(item => (
           <div class="col-md-6">
             <PortfolioCard item={item} />
           </div>
@@ -128,7 +130,7 @@ const reviewsSchema = {
       </div>
       
       <div class="text-center mt-5">
-        <a href="/portfolio/" class="btn btn-outline-primary btn-lg">
+        <a href=`${base}portfolio/` class="btn btn-outline-primary btn-lg">
           Смотреть все работы
           <i class="bi bi-arrow-right ms-2"></i>
         </a>
