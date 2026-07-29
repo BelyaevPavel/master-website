@@ -1,0 +1,93 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PortfolioCard from '@/components/PortfolioCard.astro';
+import portfolio from '@/data/portfolio.json';
+
+const base = import.meta.env.BASE_URL; 
+
+const title = 'Портфолио работ мастера по ремонту';
+const description = 'Реальные примеры выполненных работ: ремонт ванных, электромонтаж, укладка плитки. Фото до и после.';
+
+// Собираем все уникальные теги для фильтрации
+const allTags = portfolio.flatMap(item => item.tags);
+const uniqueTags = [...new Set(allTags)];
+---
+
+<BaseLayout title={title} description={description}>
+  <section class="portfolio-page py-5" aria-labelledby="portfolio-heading">
+    <div class="container">
+      <!-- Хлебные крошки -->
+      <nav aria-label="Breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href=`${base}`>Главная</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Портфолио</li>
+        </ol>
+      </nav>
+
+      <!-- Заголовок -->
+      <div class="text-center mb-5">
+        <h1 id="portfolio-heading" class="display-5 fw-bold mb-3">
+          Наши работы
+        </h1>
+        <p class="lead text-muted">
+          Реальные объекты с фото «до» и «после»
+        </p>
+      </div>
+
+      <!-- Фильтр по тегам -->
+      <div class="mb-4 text-center">
+        <div class="btn-group flex-wrap gap-2" role="group" aria-label="Фильтр по тегам">
+          <button type="button" class="btn btn-outline-primary active" data-tag="all">
+            Все
+          </button>
+          {uniqueTags.map(tag => (
+            <button type="button" class="btn btn-outline-secondary" data-tag={tag}>
+              {tag}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Сетка карточек -->
+      <div class="row g-4" id="portfolio-grid">
+        {portfolio.map(item => (
+          <div class="col-md-6 col-lg-4 portfolio-item" data-tags={item.tags.join(',')}>
+            <PortfolioCard item={item} />
+          </div>
+        ))}
+      </div>
+
+      {portfolio.length === 0 && (
+        <div class="text-center py-5">
+          <p class="text-muted">Пока нет работ в портфолио.</p>
+        </div>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-tag]');
+    const items = document.querySelectorAll<HTMLElement>('.portfolio-item');
+
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        // Убираем активный класс у всех кнопок
+        buttons.forEach((btn) => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        const selectedTag = button.dataset.tag ?? 'all';
+
+        items.forEach((item) => {
+          if (selectedTag === 'all') {
+            item.style.display = '';
+          } else {
+            const tags = item.dataset.tags?.split(',') ?? [];
+            item.style.display = tags.includes(selectedTag) ? '' : 'none';
+          }
+        });
+      });
+    });
+  });
+</script>
