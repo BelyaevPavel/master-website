@@ -253,6 +253,33 @@ export const StatsArraySchema = z
   .min(1, '❌ Должен быть хотя бы один элемент статистики');
 
 // ═══════════════════════════════════════════════════════════
+// 7. Схема для about.json
+// ═══════════════════════════════════════════════════════════
+
+const StatItemAboutSchema = z.object({
+  value: z.string().min(1, '❌ Значение статистики не может быть пустым'),
+  label: z.string().min(1, '❌ Подпись статистики не может быть пустой'),
+});
+
+export const AboutSchema = z.object({
+  title: nonEmptyString.min(2, '❌ Заголовок слишком короткий'),
+  subtitle: nonEmptyString.min(2, '❌ Подзаголовок слишком короткий'),
+
+  photo: nonEmptyString
+    .regex(/\.(jpg|jpeg|png|webp)$/i, '❌ Фото должно иметь расширение .jpg, .png или .webp')
+    .optional(), // если фото может отсутствовать, но в вашем JSON оно есть — можно оставить обязательным
+
+  photoAlt: nonEmptyString.min(3, '❌ Альтернативный текст слишком короткий'),
+
+  intro: nonEmptyString.min(20, '❌ Вступление слишком короткое (минимум 20 символов)'),
+  about: nonEmptyString.min(40, '❌ Основной текст слишком короткий (минимум 40 символов)'),
+
+  stats: z.array(StatItemAboutSchema).min(1, '❌ Должна быть хотя бы одна статистика'),
+
+  signature: nonEmptyString.min(2, '❌ Подпись слишком короткая'),
+});
+
+// ═══════════════════════════════════════════════════════════
 // (Опционально) Экспорт типов для использования в коде
 // ═══════════════════════════════════════════════════════════
 export type Contact = z.infer<typeof ContactSchema>;
@@ -261,3 +288,4 @@ export type PortfolioItem = z.infer<typeof PortfolioItemSchema>;
 export type Testimonial = z.infer<typeof TestimonialSchema>;
 export type FAQItem = z.infer<typeof FAQItemSchema>;
 export type StatItem = z.infer<typeof StatItemSchema>;
+export type About = z.infer<typeof AboutSchema>;

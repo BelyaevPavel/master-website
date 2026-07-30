@@ -12,6 +12,7 @@ import {
   TestimonialsArraySchema,
   FAQArraySchema,
   StatsArraySchema,
+  AboutSchema,
 } from '../validators/schemas.js';
 
 // ═══════════════════════════════════════════════════════════
@@ -38,6 +39,7 @@ const filesToValidate: DataFile[] = [
   { filename: 'testimonials.json', schema: TestimonialsArraySchema, label: '⭐ Отзывы' },
   { filename: 'faq.json', schema: FAQArraySchema, label: '❓ FAQ' },
   { filename: 'stats.json', schema: StatsArraySchema, label: '📊 Статистика' },
+  { filename: 'about.json', schema: AboutSchema, label: '📄 Обо мне' },
 ];
 
 // ═══════════════════════════════════════════════════════════
